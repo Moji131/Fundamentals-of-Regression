@@ -1,37 +1,29 @@
-# This is the main configuration file for your Quarto website.
-
 project:
   type: website
-  # This tells Quarto to put the rendered website files into a 'docs' folder.
-  # This is required for the standard GitHub Pages setup.
-  output-dir: docs
+  output-dir: _site
 
 website:
-  # The title of your website, which appears in the browser tab and sidebar.
-  title: "Clustering Basics"
-
-  # We replace the 'navbar' with a 'sidebar' to move navigation to the left.
-  # Quarto will automatically use the first item listed in the 'contents'
-  # as the homepage and render it to 'index.html'.
-  sidebar:
-    style: "docked"
-    contents:
-      - href: 00_setup_guide.md
-        text: 00_setup_guide
-      - href: 01_intro_to_clustering.ipynb
-        text: 01_intro_to_clustering
-      - href: 02_kmeans_clustering.ipynb
-        text: 02_kmeans_clustering      
-      - href: 03_hierarchical_clustering.ipynb
-        text: 03_hierarchical_clustering      
-      - href: 04_dbscan_clustering.ipynb
-        text: 04_dbscan_clustering
-      - href: 05_PCA.ipynb
-        text: 05_PCA
-      - href: 06_tsne.ipynb
-        text: 06_tsne
-
-
+  title: "Fundamentals of Regression"
+  navbar:
+    left:
+      - text: "Setup"
+        href: 00_setup.md
+      - text: "Intro"
+        href: 01_introduction_to_regression.ipynb
+      - text: "Linear Regression"
+        href: 02_linear_regression.ipynb
+      - text: "Model Evaluation"
+        href: 03_model_evaluation.ipynb
+      - text: "Regularization"
+        href: 04_regularization.ipynb
+      - text: "Bayesian (Stan-free)"
+        href: 05_bayesian_regression.ipynb
+      - text: "Neural Networks"
+        href: 06_neural_network.ipynb
+      - text: "Decision Trees"
+        href: 07_tree_regression.ipynb
+  repo-url: "https://github.com/Moji131/Fundamentals-of-Regression"   # <-- replace after creating repo
+  repo-actions: [source, issue]
 
 # This section controls the default appearance and formatting for the HTML output.
 format:

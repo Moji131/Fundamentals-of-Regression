@@ -48,7 +48,7 @@ When you have a Jupyter server running use JupyterLab file navigator to go the f
 ```
 !rm -rf /scratch/cd82/$USER/notebooks
 !mkdir -p /scratch/cd82/$USER/notebooks
-!cp /scratch/cd82/clustering_ws/* /scratch/cd82/$USER/notebooks/
+!cp /scratch/cd82/regression_notebooks/* /scratch/cd82/$USER/notebooks/
 !ls /scratch/cd82/$USER/notebooks/
 ```
 
