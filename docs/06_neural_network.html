@@ -234,7 +234,6 @@ window.Quarto = {
   <li><a href="#mlp-for-regression-theory" id="toc-mlp-for-regression-theory" class="nav-link active" data-scroll-target="#mlp-for-regression-theory">MLP for Regression (Theory)</a></li>
   <li><a href="#data-diabetes-sklearn" id="toc-data-diabetes-sklearn" class="nav-link" data-scroll-target="#data-diabetes-sklearn">Data: Diabetes (sklearn)</a></li>
   <li><a href="#lightweight-uncertainty-via-ensembling" id="toc-lightweight-uncertainty-via-ensembling" class="nav-link" data-scroll-target="#lightweight-uncertainty-via-ensembling">Lightweight Uncertainty via Ensembling</a></li>
-  <li><a href="#parallelisation-on-nci-are" id="toc-parallelisation-on-nci-are" class="nav-link" data-scroll-target="#parallelisation-on-nci-are">Parallelisation on NCI ARE</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Moji131/Fundamentals-of-Regression/blob/main/06_neural_network.ipynb" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/Moji131/Fundamentals-of-Regression/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -261,12 +260,12 @@ window.Quarto = {
 </header>
 
 
-<p>In this lesson we build a <strong>neural network regressor</strong> (MLP) for the <strong>Diabetes</strong> dataset. We’ll handle <strong>mixed data types</strong> (numeric + categorical) via preprocessing pipelines, train an <code>MLPRegressor</code>, and evaluate with metrics and diagnostics. We’ll also add a lightweight <strong>uncertainty</strong> estimate using an <strong>ensemble</strong> of MLPs.</p>
+<p>In this lesson we build a <strong>neural network regressor</strong> (MLP) for the <strong>Diabetes</strong> dataset. We’ll train an <code>MLPRegressor</code>, and evaluate with metrics and diagnostics. We’ll also add a lightweight <strong>uncertainty</strong> estimate using an <strong>ensemble</strong> of MLPs.</p>
 <p><strong>Learning objectives</strong> - Preprocess mixed features with <code>ColumnTransformer</code> (scaling + standardization). - Train and tune an <code>MLPRegressor</code> with early stopping. - Evaluate with <span class="math inline">\(\text{RMSE}\)</span>, <span class="math inline">\(\text{MAE}\)</span>, and <span class="math inline">\(R^2\)</span>; create residual and calibration plots. - Use a small <strong>ensemble</strong> of MLPs for predictive <strong>mean</strong> and <strong>uncertainty (std)</strong>.</p>
 <section id="mlp-for-regression-theory" class="level2">
 <h2 class="anchored" data-anchor-id="mlp-for-regression-theory">MLP for Regression (Theory)</h2>
 <p>A feed‑forward network with <span class="math inline">\(L\)</span> layers composes affine maps and nonlinearities: <span class="math display">\[
-\hat{y} = f(x;\`theta) = W^{(L)} a^{(L-1)} + b^{(L)}, \quad a^{(\ell)} = \phi\!\left(W^{(\ell)} a^{(\ell-1)} + b^{(\ell)}\right),
+\hat{y} = f(x;\theta) = W^{(L)} a^{(L-1)} + b^{(L)}, \quad a^{(\ell)} = \phi\!\left(W^{(\ell)} a^{(\ell-1)} + b^{(\ell)}\right),
 \]</span> with <span class="math inline">\(a^{(0)} = x\)</span>, parameters <span class="math inline">\(\theta = \{W^{(\ell)}, b^{(\ell)}\}\)</span>, and activation <span class="math inline">\(\phi\)</span> (e.g., ReLU).<br>
 We minimize <strong>mean squared error</strong> (MSE): <span class="math display">\[
 \mathcal{L}(\theta) = \frac{1}{n}\sum_{i=1}^n (y_i - f(x_i;\theta))^2.
@@ -283,7 +282,7 @@ We minimize <strong>mean squared error</strong> (MSE): <span class="math display
 <blockquote class="blockquote">
 <p>No categorical features here — preprocessing only needs <strong>standardization</strong>.</p>
 </blockquote>
-<div id="862b2f76" class="cell" data-execution_count="7">
+<div id="862b2f76" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Diabetes dataset (built-in)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -297,7 +296,7 @@ We minimize <strong>mean squared error</strong> (MSE): <span class="math display
 <div class="cell-output cell-output-stdout">
 <pre><code>Loaded Diabetes dataset. Shape: (442, 11)</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
@@ -395,7 +394,7 @@ We minimize <strong>mean squared error</strong> (MSE): <span class="math display
 </div>
 </div>
 </div>
-<div id="f0fcf76d" class="cell" data-execution_count="8">
+<div id="f0fcf76d" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split and build preprocessing pipeline (numeric-only)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
@@ -406,7 +405,7 @@ We minimize <strong>mean squared error</strong> (MSE): <span class="math display
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[target].values</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df.drop(columns<span class="op">=</span>[target])</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>numeric_features <span class="op">=</span> X.columns.tolist()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> X.columns.tolist()</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
@@ -414,17 +413,17 @@ We minimize <strong>mean squared error</strong> (MSE): <span class="math display
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>preprocess <span class="op">=</span> ColumnTransformer(</span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    transformers<span class="op">=</span>[</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'num'</span>, StandardScaler(with_mean<span class="op">=</span><span class="va">True</span>, with_std<span class="op">=</span><span class="va">True</span>), numeric_features),</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'num'</span>, StandardScaler(with_mean<span class="op">=</span><span class="va">True</span>, with_std<span class="op">=</span><span class="va">True</span>), features),</span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    ],</span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    remainder<span class="op">=</span><span class="st">'drop'</span></span>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>numeric_features</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>features</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>['age', 'sex', 'bmi', 'bp', 's1', 's2', 's3', 's4', 's5', 's6']</code></pre>
 </div>
 </div>
-<div id="93dc94cd" class="cell" data-execution_count="9">
+<div id="93dc94cd" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Baseline MLPRegressor with early stopping</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPRegressor</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
@@ -464,7 +463,7 @@ We minimize <strong>mean squared error</strong> (MSE): <span class="math display
 Test : RMSE=57.2   MAE=46.7   R^2=0.382</code></pre>
 </div>
 </div>
-<div id="a3f16972" class="cell" data-execution_count="10">
+<div id="a3f16972" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagnostics</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -524,7 +523,7 @@ Test : RMSE=57.2   MAE=46.7   R^2=0.382</code></pre>
 <section id="lightweight-uncertainty-via-ensembling" class="level2">
 <h2 class="anchored" data-anchor-id="lightweight-uncertainty-via-ensembling">Lightweight Uncertainty via Ensembling</h2>
 <p>Train <span class="math inline">\(K\)</span> networks with different random seeds and average their predictions: - The <strong>ensemble mean</strong> reduces variance. - The <strong>ensemble standard deviation</strong> (per sample) provides a pragmatic <strong>uncertainty proxy</strong>.</p>
-<div id="a41b0052" class="cell" data-execution_count="11">
+<div id="a41b0052" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train a small ensemble and compute mean/std of predictions</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPRegressor</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
@@ -567,7 +566,7 @@ Test : RMSE=57.2   MAE=46.7   R^2=0.382</code></pre>
 Per-sample prediction std (first 10): [ 9.7  3.5  9.4  8.2  7.4  4.  10.   6.9  8.8 10.5]</code></pre>
 </div>
 </div>
-<div id="c5629b76" class="cell" data-execution_count="12">
+<div id="c5629b76" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize uncertainty: error vs ensemble std</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -579,17 +578,7 @@ Per-sample prediction std (first 10): [ 9.7  3.5  9.4  8.2  7.4  4.  10.   6.9  
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Ensemble prediction std (uncertainty)"</span>)</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Absolute error |y - ŷ|"</span>)</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Uncertainty proxy vs Absolute Error (Test)"</span>)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Calibration-style plot: group by uncertainty quantiles</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> np.quantile(y_pred_std, [<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">1.0</span>])</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> np.digitize(y_pred_std, q[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>], right<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>group_mae <span class="op">=</span> [abs_err[bins<span class="op">==</span>i].mean() <span class="cf">if</span> np.<span class="bu">any</span>(bins<span class="op">==</span>i) <span class="cf">else</span> np.nan <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>)]</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>plt.bar([<span class="st">"Q1"</span>,<span class="st">"Q2"</span>,<span class="st">"Q3"</span>,<span class="st">"Q4"</span>], group_mae)</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Mean |error|"</span>)</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Errors by Uncertainty Quartile (lower→higher)"</span>)</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -597,38 +586,14 @@ Per-sample prediction std (first 10): [ 9.7  3.5  9.4  8.2  7.4  4.  10.   6.9  
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="06_neural_network_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
-</figure>
 </div>
-</div>
-</div>
-</section>
-<section id="parallelisation-on-nci-are" class="level2">
-<h2 class="anchored" data-anchor-id="parallelisation-on-nci-are">Parallelisation on NCI ARE</h2>
-<ul>
-<li><code>MLPRegressor</code> itself does not expose <code>n_jobs</code>, but you can parallelise <strong>ensembles</strong> with <code>joblib</code> or the <code>threading</code> backend:</li>
-</ul>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> joblib <span class="im">import</span> Parallel, delayed, parallel_backend</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> parallel_backend(<span class="st">'threading'</span>):</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    preds <span class="op">=</span> Parallel(n_jobs<span class="op">=-</span><span class="dv">1</span>)(</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        delayed(Pipeline([(<span class="st">'prep'</span>, preprocess), (<span class="st">'mlp'</span>, MLPRegressor(..., random_state<span class="op">=</span>seed))]).fit(X_train, y_train).predict)(X_test)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> seed <span class="kw">in</span> <span class="bu">range</span>(K)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Avoid oversubscription (too many threads) on shared nodes; start with <code>n_jobs=4</code> and increase if the node has capacity.</li>
-</ul>
 </section>
 <section id="exercises" class="level2">
 <h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
 <ol type="1">
 <li><strong>Hyperparameters:</strong> Try <code>hidden_layer_sizes=(128, 64)</code> and <code>alpha=1e-3</code>. Does <span class="math inline">\(R^2\)</span> improve on test?</li>
 <li><strong>Input transforms:</strong> Add polynomial features for <code>bmi</code> (or interactions) before the MLP. Any gain?</li>
-<li><strong>Uncertainty:</strong> Increase the ensemble size <span class="math inline">\(K\)</span> to 10–20 (time permitting). Does the std correlate better with errors?</li>
-<li><strong>Robustness:</strong> Train with <code>smoker</code> removed. How do performance and uncertainty change?</li>
+<li><strong>Uncertainty:</strong> Increase the ensemble size <span class="math inline">\(K\)</span> to 10–20. Does the std correlate better with errors?</li>
 </ol>
 
 

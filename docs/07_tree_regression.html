@@ -456,7 +456,7 @@ Test : RMSE=70.55   MAE=54.53   R^2=0.061</code></pre>
 <h2 class="anchored" data-anchor-id="crossvalidation-pruning">Cross‑Validation &amp; Pruning</h2>
 <p>We tune <code>max_depth</code>, <code>min_samples_leaf</code>, and <code>ccp_alpha</code> using <span class="math inline">\(k\)</span>‑fold CV.<br>
 On some HPC setups, default parallelism can fail; we wrap with the <strong>threading backend</strong> (or use <code>n_jobs=1</code>).</p>
-<div id="c05a8847" class="cell" data-execution_count="4">
+<div id="c05a8847" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Grid search for tree hyperparameters (HPC-friendly)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV, KFold</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeRegressor</span>
@@ -471,27 +471,22 @@ On some HPC setups, default parallelism can fail; we wrap with the <strong>threa
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>tree <span class="op">=</span> DecisionTreeRegressor(random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> joblib <span class="im">import</span> parallel_backend</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> parallel_backend(<span class="st">'threading'</span>):</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        gsv <span class="op">=</span> GridSearchCV(tree, param_grid, scoring<span class="op">=</span><span class="st">'r2'</span>, cv<span class="op">=</span>cv, n_jobs<span class="op">=-</span><span class="dv">1</span>, refit<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        gsv.fit(X_train, y_train)</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span>:</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    gsv <span class="op">=</span> GridSearchCV(tree, param_grid, scoring<span class="op">=</span><span class="st">'r2'</span>, cv<span class="op">=</span>cv, n_jobs<span class="op">=</span><span class="dv">1</span>, refit<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    gsv.fit(X_train, y_train)</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best params:"</span>, gsv.best_params_)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best CV R^2:"</span>, <span class="bu">round</span>(gsv.best_score_, <span class="dv">3</span>))</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>best_tree <span class="op">=</span> gsv.best_estimator_</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>y_pred_test_best <span class="op">=</span> best_tree.predict(X_test)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>gsv <span class="op">=</span> GridSearchCV(tree, param_grid, scoring<span class="op">=</span><span class="st">'r2'</span>, cv<span class="op">=</span>cv, n_jobs<span class="op">=</span><span class="dv">1</span>, refit<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>gsv.fit(X_train, y_train)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best params:"</span>, gsv.best_params_)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Best CV R^2:"</span>, <span class="bu">round</span>(gsv.best_score_, <span class="dv">3</span>))</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>best_tree <span class="op">=</span> gsv.best_estimator_</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>y_pred_test_best <span class="op">=</span> best_tree.predict(X_test)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, mean_absolute_error, r2_score</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>rmse <span class="op">=</span> np.sqrt(mean_squared_error(y_test, y_pred_test_best))</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>mae  <span class="op">=</span> mean_absolute_error(y_test, y_pred_test_best)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>r2   <span class="op">=</span> r2_score(y_test, y_pred_test_best)</span>
 <span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, mean_absolute_error, r2_score</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>rmse <span class="op">=</span> np.sqrt(mean_squared_error(y_test, y_pred_test_best))</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>mae  <span class="op">=</span> mean_absolute_error(y_test, y_pred_test_best)</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>r2   <span class="op">=</span> r2_score(y_test, y_pred_test_best)</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test metrics (tuned): RMSE=</span><span class="sc">{</span>rmse<span class="sc">:.2f}</span><span class="ss">  MAE=</span><span class="sc">{</span>mae<span class="sc">:.2f}</span><span class="ss">  R^2=</span><span class="sc">{</span>r2<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test metrics (tuned): RMSE=</span><span class="sc">{</span>rmse<span class="sc">:.2f}</span><span class="ss">  MAE=</span><span class="sc">{</span>mae<span class="sc">:.2f}</span><span class="ss">  R^2=</span><span class="sc">{</span>r2<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Best params: {'ccp_alpha': 0.0, 'max_depth': 4, 'min_samples_leaf': 3}
 Best CV R^2: 0.284
@@ -643,7 +638,6 @@ dtype: float64</code></pre>
 <h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
 <ol type="1">
 <li><strong>Validation curve:</strong> Plot validation <span class="math inline">\(R^2\)</span> as a function of <code>max_depth</code> and <code>min_samples_leaf</code> separately.</li>
-<li><strong>Pruning path:</strong> Use <code>cost_complexity_pruning_path</code> to visualize <span class="math inline">\(\\alpha\)</span> vs effective leaves and pick a simpler tree.</li>
 <li><strong>Target transform:</strong> Fit a tree to predict <span class="math inline">\(\\log(1+y)\)</span> and compare test <span class="math inline">\(R^2\)</span>.</li>
 <li><strong>Robustness:</strong> Change the random seed and redo GridSearchCV. How stable are the chosen hyperparameters?</li>
 </ol>
