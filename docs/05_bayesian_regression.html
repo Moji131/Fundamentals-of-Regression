@@ -529,7 +529,7 @@ y_* \mid x_*, \mathcal{D} \ \sim\ \mathcal{N}\!\Big(x_*^\top \boldsymbol{\beta}_
 <pre><code>Estimated sigma^2_hat (train OLS residual variance): 2960.813</code></pre>
 </div>
 </div>
-<div id="453e663a" class="cell" data-execution_count="50">
+<div id="453e663a" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Closed-form Bayesian linear regression (Normal prior on beta)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -543,19 +543,19 @@ y_* \mid x_*, \mathcal{D} \ \sim\ \mathcal{N}\!\Big(x_*^\top \boldsymbol{\beta}_
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>Sigma_post <span class="op">=</span> np.linalg.inv((XtX <span class="op">/</span> sigma2_hat) <span class="op">+</span> (I <span class="op">/</span> (tau<span class="op">**</span><span class="dv">2</span>)))</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>beta_post  <span class="op">=</span> Sigma_post <span class="op">@</span> (Xty <span class="op">/</span> sigma2_hat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="76c9ef40" class="cell" data-execution_count="51">
+<div id="76c9ef40" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coefficients</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>beta_post</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="51">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>array([ 151.5748261 ,   44.6760888 , -157.03826861,  430.76561109,
         278.31508518,  -49.83515387,  -78.85649793, -186.4994001 ,
         138.63049196,  328.27442616,  103.67433555])</code></pre>
 </div>
 </div>
-<div id="457e4179" class="cell" data-execution_count="52">
+<div id="457e4179" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Uncertainty (std) in coefficients</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Sigma_post[:<span class="dv">5</span>, :<span class="dv">5</span>]  <span class="co"># show top-left 5x5 block</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="52">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>array([[ 8.40552432e+00, -3.36435602e+00,  5.60889493e-01,
         -3.31728348e+00, -7.67202776e-01],
        [-3.36435602e+00,  3.14644979e+03, -2.99012083e+02,
@@ -568,7 +568,7 @@ y_* \mid x_*, \mathcal{D} \ \sim\ \mathcal{N}\!\Big(x_*^\top \boldsymbol{\beta}_
         -6.33608476e+02,  3.19338604e+03]])</code></pre>
 </div>
 </div>
-<div id="6595b755" class="cell" data-execution_count="53">
+<div id="6595b755" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictive mean on test set</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_mean_post <span class="op">=</span> X_test_i <span class="op">@</span> beta_post</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -576,7 +576,7 @@ y_* \mid x_*, \mathcal{D} \ \sim\ \mathcal{N}\!\Big(x_*^\top \boldsymbol{\beta}_
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># param_var = np.sum(X_test_i @ Sigma_post * X_test_i, axis=1)  # diag(X Sigma_post X^T)</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># y_pred_var = sigma2_hat + param_var</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="d346c2ed" class="cell" data-execution_count="54">
+<div id="d346c2ed" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -604,7 +604,7 @@ y_* \mid x_*, \mathcal{D} \ \sim\ \mathcal{N}\!\Big(x_*^\top \boldsymbol{\beta}_
 Median relative error: 0.022010020708090185</code></pre>
 </div>
 </div>
-<div id="a39830bb" class="cell" data-execution_count="55">
+<div id="a39830bb" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute test metrics using posterior mean (point predictions)</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -624,7 +624,7 @@ Median relative error: 0.022010020708090185</code></pre>
 <p>We draw <span class="math inline">\(S\)</span> samples <span class="math inline">\(\boldsymbol{\beta}^{(s)} \sim \mathcal{N}(\boldsymbol{\beta}_{\text{post}}, \Sigma_{\text{post}})\)</span> and compute predictive draws: <span class="math display">\[
 y_*^{(s)} = x_*^\top \boldsymbol{\beta}^{(s)} + \varepsilon^{(s)}, \quad \varepsilon^{(s)} \sim \mathcal{N}(0, \sigma^2).
 \]</span> Taking percentiles across <span class="math inline">\(\{y_*^{(s)}\}\)</span> yields <strong>prediction intervals</strong>; using percentiles of <span class="math inline">\(x_*^\top \boldsymbol{\beta}^{(s)}\)</span> yields <strong>credible intervals</strong> for the mean prediction.</p>
-<div id="120012fc" class="cell" data-execution_count="56">
+<div id="120012fc" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior sampling for intervals</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -642,35 +642,29 @@ y_*^{(s)} = x_*^\top \boldsymbol{\beta}^{(s)} + \varepsilon^{(s)}, \quad \vareps
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pct(a, q): <span class="cf">return</span> np.percentile(a, q, axis<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>ci_lo, ci_hi <span class="op">=</span> pct(y_mean_samples, <span class="fl">2.5</span>), pct(y_mean_samples, <span class="fl">97.5</span>)</span>
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>pi_lo, pi_hi <span class="op">=</span> pct(y_pred_samples, <span class="fl">2.5</span>), pct(y_pred_samples, <span class="fl">97.5</span>)</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Coverage of prediction intervals (fraction of true y in PI)</span></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>coverage <span class="op">=</span> np.mean((y_test <span class="op">&gt;=</span> pi_lo) <span class="op">&amp;</span> (y_test <span class="op">&lt;=</span> pi_hi))</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Approx. test-set 95% PI coverage: </span><span class="sc">{</span>coverage<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Approx. test-set 95% PI coverage: 96.6%</code></pre>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<div id="d1ad8aa6" class="cell" data-execution_count="57">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize uncertainty on a sorted index for readability</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> np.argsort(y_test)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>y_sorted <span class="op">=</span> y_test[idx]</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>y_mean_sorted <span class="op">=</span> y_mean_post[idx]</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>ci_lo_s, ci_hi_s <span class="op">=</span> ci_lo[idx], ci_hi[idx]</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>pi_lo_s, pi_hi_s <span class="op">=</span> pi_lo[idx], pi_hi[idx]</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">4</span>))</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>plt.plot(y_sorted, label<span class="op">=</span><span class="st">"Actual"</span>)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>plt.plot(y_mean_sorted, label<span class="op">=</span><span class="st">"Posterior mean"</span>)</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>plt.fill_between(<span class="bu">range</span>(<span class="bu">len</span>(y_sorted)), ci_lo_s, ci_hi_s, alpha<span class="op">=</span><span class="fl">0.3</span>, label<span class="op">=</span><span class="st">"95% CrI (mean)"</span>)</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>plt.fill_between(<span class="bu">range</span>(<span class="bu">len</span>(y_sorted)), pi_lo_s, pi_hi_s, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"95% PI (predictive)"</span>)</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Sorted test index"</span>)</span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Target"</span>)</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian Regression: Credible vs Prediction Intervals"</span>)</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d1ad8aa6" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize uncertainty on a sorted index for readability</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> np.argsort(y_test)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>y_sorted <span class="op">=</span> y_test[idx]</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>y_mean_sorted <span class="op">=</span> y_mean_post[idx]</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>ci_lo_s, ci_hi_s <span class="op">=</span> ci_lo[idx], ci_hi[idx]</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>pi_lo_s, pi_hi_s <span class="op">=</span> pi_lo[idx], pi_hi[idx]</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">4</span>))</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>plt.plot(y_sorted, label<span class="op">=</span><span class="st">"Actual"</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>plt.plot(y_mean_sorted, label<span class="op">=</span><span class="st">"Posterior mean"</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>plt.fill_between(<span class="bu">range</span>(<span class="bu">len</span>(y_sorted)), ci_lo_s, ci_hi_s, alpha<span class="op">=</span><span class="fl">0.3</span>, label<span class="op">=</span><span class="st">"95% CrI (mean)"</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>plt.fill_between(<span class="bu">range</span>(<span class="bu">len</span>(y_sorted)), pi_lo_s, pi_hi_s, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"95% PI (predictive)"</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Sorted test index"</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Target"</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian Regression: Credible vs Prediction Intervals"</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -684,65 +678,59 @@ y_*^{(s)} = x_*^\top \boldsymbol{\beta}^{(s)} + \varepsilon^{(s)}, \quad \vareps
 <h2 class="anchored" data-anchor-id="bootstrap-approximation-frequentist-but-practical">Bootstrap Approximation (Frequentist but Practical)</h2>
 <p>The <strong>bootstrap</strong> resamples the training data to mimic sampling variability: 1. Draw <span class="math inline">\(B\)</span> bootstrap datasets by sampling <span class="math inline">\(n\)</span> rows <strong>with replacement</strong>. 2. Fit an OLS model on each bootstrap sample. 3. Predict on the test set; take percentiles across predictions for <strong>empirical prediction intervals</strong>.</p>
 <p>This is not Bayesian, but it often gives <strong>similar intuition</strong> about uncertainty without extra libraries.</p>
-<div id="27956ff6" class="cell" data-execution_count="58">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap predictive intervals</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.utils <span class="im">import</span> resample</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> <span class="dv">200</span>  <span class="co"># number of bootstrap replicates (increase if time allows)</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> []</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(B):</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    Xb, yb <span class="op">=</span> resample(X_train_i, y_train, replace<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">1234</span> <span class="op">+</span> b)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> LinearRegression(fit_intercept<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    m.fit(Xb, yb)</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    preds.append(m.predict(X_test_i))</span>
+<div id="27956ff6" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap predictive intervals</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.utils <span class="im">import</span> resample</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> <span class="dv">200</span>  <span class="co"># number of bootstrap replicates (increase if time allows)</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> []</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(B):</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    Xb, yb <span class="op">=</span> resample(X_train_i, y_train, replace<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">1234</span> <span class="op">+</span> b)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> LinearRegression(fit_intercept<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    m.fit(Xb, yb)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    preds.append(m.predict(X_test_i))</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> np.array(preds)  <span class="co"># shape (B, n_test)</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pct(a, q): <span class="cf">return</span> np.percentile(a, q, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>boot_lo, boot_hi <span class="op">=</span> pct(preds, <span class="fl">2.5</span>), pct(preds, <span class="fl">97.5</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="3eafad86" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare Bayesian PI vs Bootstrap intervals on a few points</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="bu">min</span>(<span class="dv">30</span>, <span class="bu">len</span>(y_test))  <span class="co"># plot first k sorted points for clarity</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> np.argsort(y_test)[:k]</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>y_c <span class="op">=</span> y_mean_post[idx]</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Bayes PI errors (ensure non-negative magnitudes)</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>bayes_lower <span class="op">=</span> np.clip(y_c <span class="op">-</span> pi_lo[idx], <span class="dv">0</span>, <span class="va">None</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>bayes_upper <span class="op">=</span> np.clip(pi_hi[idx] <span class="op">-</span> y_c, <span class="dv">0</span>, <span class="va">None</span>)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>bayes_yerr <span class="op">=</span> np.vstack([bayes_lower, bayes_upper])</span>
 <span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> np.array(preds)  <span class="co"># shape (B, n_test)</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pct(a, q): <span class="cf">return</span> np.percentile(a, q, axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>boot_lo, boot_hi <span class="op">=</span> pct(preds, <span class="fl">2.5</span>), pct(preds, <span class="fl">97.5</span>)</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap PI errors (ensure non-negative magnitudes)</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>boot_lower <span class="op">=</span> np.clip(y_c <span class="op">-</span> boot_lo[idx], <span class="dv">0</span>, <span class="va">None</span>)</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>boot_upper <span class="op">=</span> np.clip(boot_hi[idx] <span class="op">-</span> y_c, <span class="dv">0</span>, <span class="va">None</span>)</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>boot_yerr <span class="op">=</span> np.vstack([boot_lower, boot_upper])</span>
 <span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Coverage (how often true y lies within bootstrap interval)</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>boot_cov <span class="op">=</span> np.mean((y_test <span class="op">&gt;=</span> boot_lo) <span class="op">&amp;</span> (y_test <span class="op">&lt;=</span> boot_hi))</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Bootstrap approx. 95% interval coverage: </span><span class="sc">{</span>boot_cov<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Bootstrap approx. 95% interval coverage: 28.1%</code></pre>
-</div>
-</div>
-<div id="3eafad86" class="cell" data-execution_count="59">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare Bayesian PI vs Bootstrap intervals on a few points</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="bu">min</span>(<span class="dv">30</span>, <span class="bu">len</span>(y_test))  <span class="co"># plot first k sorted points for clarity</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> np.argsort(y_test)[:k]</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>y_c <span class="op">=</span> y_mean_post[idx]</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Bayes PI errors (ensure non-negative magnitudes)</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>bayes_lower <span class="op">=</span> np.clip(y_c <span class="op">-</span> pi_lo[idx], <span class="dv">0</span>, <span class="va">None</span>)</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>bayes_upper <span class="op">=</span> np.clip(pi_hi[idx] <span class="op">-</span> y_c, <span class="dv">0</span>, <span class="va">None</span>)</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>bayes_yerr <span class="op">=</span> np.vstack([bayes_lower, bayes_upper])</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap PI errors (ensure non-negative magnitudes)</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>boot_lower <span class="op">=</span> np.clip(y_c <span class="op">-</span> boot_lo[idx], <span class="dv">0</span>, <span class="va">None</span>)</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>boot_upper <span class="op">=</span> np.clip(boot_hi[idx] <span class="op">-</span> y_c, <span class="dv">0</span>, <span class="va">None</span>)</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>boot_yerr <span class="op">=</span> np.vstack([boot_lower, boot_upper])</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">4</span>))</span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(k), y_test[idx], label<span class="op">=</span><span class="st">"Actual"</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(k), y_c, label<span class="op">=</span><span class="st">"Posterior mean"</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>plt.errorbar(<span class="bu">range</span>(k), y_c, yerr<span class="op">=</span>bayes_yerr, fmt<span class="op">=</span><span class="st">'none'</span>, capsize<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">"Bayes 95% PI"</span>)</span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>plt.errorbar(<span class="bu">range</span>(k), y_c, yerr<span class="op">=</span>boot_yerr,  fmt<span class="op">=</span><span class="st">'none'</span>, capsize<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">"Bootstrap 95% PI"</span>)</span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Sorted test index (subset)"</span>)</span>
-<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Target"</span>)</span>
-<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian vs Bootstrap Prediction Intervals (subset)"</span>)</span>
-<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">4</span>))</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(k), y_test[idx], <span class="st">'k'</span>, label<span class="op">=</span><span class="st">"Actual"</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(k), y_c, <span class="st">'b'</span>, label<span class="op">=</span><span class="st">"Posterior mean"</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>plt.errorbar(<span class="bu">range</span>(k), y_c, yerr<span class="op">=</span>bayes_yerr, fmt<span class="op">=</span><span class="st">'none'</span>, capsize<span class="op">=</span><span class="dv">3</span>, ecolor<span class="op">=</span><span class="st">'blue'</span>, label<span class="op">=</span><span class="st">"Bayes 95% PI"</span>)</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>plt.errorbar(<span class="bu">range</span>(k), y_c, yerr<span class="op">=</span>boot_yerr,  fmt<span class="op">=</span><span class="st">'none'</span>, capsize<span class="op">=</span><span class="dv">3</span>, ecolor<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="st">"Bootstrap 95% PI"</span>)</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Sorted test index (subset)"</span>)</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Target"</span>)</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian vs Bootstrap Prediction Intervals (subset)"</span>)</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -765,7 +753,6 @@ y_*^{(s)} = x_*^\top \boldsymbol{\beta}^{(s)} + \varepsilon^{(s)}, \quad \vareps
 <ol type="1">
 <li><strong>Prior sensitivity:</strong> Change <span class="math inline">\(\tau\)</span> (e.g., 0.3, 1.0, 3.0). How do the credible and predictive intervals change? Report test <span class="math inline">\(R^2\)</span>.</li>
 <li><strong>Empirical Bayes for <span class="math inline">\(\tau\)</span>:</strong> Choose <span class="math inline">\(\tau\)</span> by 5‑fold CV, maximizing validation <span class="math inline">\(R^2\)</span> (hint: mimic Ridge search).</li>
-<li><strong>Heteroscedasticity:</strong> Replace constant <span class="math inline">\(\sigma^2\)</span> with a simple variance model <span class="math inline">\(\sigma^2(x) = \sigma^2 (1 + \gamma |x^\top \beta|)\)</span> and discuss the effect on intervals (simulation).</li>
 <li><strong>Bootstrap size:</strong> Increase <span class="math inline">\(B\)</span> to 1000. Do coverage and interval width stabilize?</li>
 </ol>
 

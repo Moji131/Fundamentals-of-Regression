@@ -21,7 +21,7 @@ website:
         href: 03_model_evaluation.ipynb
       - text: "Regularization"
         href: 04_regularization.ipynb
-      - text: "Bayesian (Stan-free)"
+      - text: "Bayesian"
         href: 05_bayesian_regression.ipynb
       - text: "Neural Networks"
         href: 06_neural_network.ipynb
