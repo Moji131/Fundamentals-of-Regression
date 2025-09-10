@@ -268,7 +268,7 @@ window.Quarto = {
 <p><strong>Learning objectives</strong> - Write the linear model and OLS objective using proper notation. - Fit and evaluate a linear regression model on the Diabetes dataset. - Interpret coefficients and assess assumptions via residual diagnostics.</p>
 <section id="linear-model-and-ols-objective" class="level2">
 <h2 class="anchored" data-anchor-id="linear-model-and-ols-objective">Linear Model and OLS Objective</h2>
-<p>A <span class="math inline">\(p\)</span>-feature linear model predicts a continuous outcome as <span class="math display">\[
+<p>A inear model predicts a continuous outcome as <span class="math display">\[
 \hat{y} = \beta_0 + \sum_{j=1}^p \beta_j x_j \,.
 \]</span></p>
 <p>In matrix form with <span class="math inline">\(X \in \mathbb{R}^{n \times p}\)</span>, parameter vector <span class="math inline">\(\boldsymbol{\beta} \in \mathbb{R}^{p}\)</span>, and target <span class="math inline">\(\mathbf{y} \in \mathbb{R}^{n}\)</span>, <span class="math display">\[
@@ -293,7 +293,7 @@ window.Quarto = {
 <li><strong>Normality of residuals:</strong> Residuals are approximately Gaussian (helps inference, less critical for prediction quality).</li>
 </ul>
 <p>We will visualize <strong>residuals vs.&nbsp;predictions</strong> and the <strong>distribution of residuals</strong> to get a feel for these assumptions.</p>
-<div id="07cb844b" class="cell" data-execution_count="11">
+<div id="07cb844b" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Diabetes dataset and fit a Linear Regression model</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
@@ -302,13 +302,13 @@ window.Quarto = {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f6d078ba" class="cell" data-execution_count="12">
+<div id="f6d078ba" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load dataset (already standardized features)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_diabetes(as_frame<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> data.frame.copy()</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df.rename(columns<span class="op">=</span>{<span class="st">'target'</span>: <span class="st">'disease_progression'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="23">
 <div>
 
 
@@ -1061,16 +1061,15 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </script>
 </div>
 </div>
-<div id="f4da0271" class="cell" data-execution_count="20">
+<div id="f4da0271" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y_pred_train <span class="op">=</span> linreg.predict(X_train)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y_pred_test <span class="op">=</span> linreg.predict(X_test)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_pred_test[:<span class="dv">10</span>])</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_test[:<span class="dv">10</span>].values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_pred_test[:<span class="dv">5</span>])</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_test[:<span class="dv">5</span>].values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[139.5475584  179.51720835 134.03875572 291.41702925 123.78965872
-  92.1723465  258.23238899 181.33732057  90.22411311 108.63375858]
-[219.  70. 202. 230. 111.  84. 242. 272.  94.  96.]</code></pre>
+<pre><code>[139.5475584  179.51720835 134.03875572 291.41702925 123.78965872]
+[219.  70. 202. 230. 111.]</code></pre>
 </div>
 </div>
 <div id="81112f14" class="cell" data-execution_count="21">

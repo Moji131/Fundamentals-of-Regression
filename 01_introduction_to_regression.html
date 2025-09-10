@@ -666,13 +666,194 @@ window.Quarto = {
 <ol type="1">
 <li>Using the scatter plots above, which feature seems most correlated with <code>disease_progression</code>? Why?</li>
 <li>Compute the correlation matrix and identify the top-3 features most correlated with the target.</li>
-<li>(Think) What kinds of clinical or biological processes might explain non-linear patterns in this dataset? How would that influence your model choice?</li>
 </ol>
-<div id="cb6bd18c" class="cell" data-execution_count="5">
+<div id="cb6bd18c" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Optional) Correlation matrix to support Exercise 2</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>corr <span class="op">=</span> df.corr(numeric_only<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>corr[<span class="st">'disease_progression'</span>].sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>display(corr)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>corr[<span class="st">'disease_progression'</span>].sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">bmi</th>
+<th data-quarto-table-cell-role="th">bp</th>
+<th data-quarto-table-cell-role="th">s1</th>
+<th data-quarto-table-cell-role="th">s2</th>
+<th data-quarto-table-cell-role="th">s3</th>
+<th data-quarto-table-cell-role="th">s4</th>
+<th data-quarto-table-cell-role="th">s5</th>
+<th data-quarto-table-cell-role="th">s6</th>
+<th data-quarto-table-cell-role="th">disease_progression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">age</td>
+<td>1.000000</td>
+<td>0.173737</td>
+<td>0.185085</td>
+<td>0.335428</td>
+<td>0.260061</td>
+<td>0.219243</td>
+<td>-0.075181</td>
+<td>0.203841</td>
+<td>0.270774</td>
+<td>0.301731</td>
+<td>0.187889</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">sex</td>
+<td>0.173737</td>
+<td>1.000000</td>
+<td>0.088161</td>
+<td>0.241010</td>
+<td>0.035277</td>
+<td>0.142637</td>
+<td>-0.379090</td>
+<td>0.332115</td>
+<td>0.149916</td>
+<td>0.208133</td>
+<td>0.043062</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">bmi</td>
+<td>0.185085</td>
+<td>0.088161</td>
+<td>1.000000</td>
+<td>0.395411</td>
+<td>0.249777</td>
+<td>0.261170</td>
+<td>-0.366811</td>
+<td>0.413807</td>
+<td>0.446157</td>
+<td>0.388680</td>
+<td>0.586450</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">bp</td>
+<td>0.335428</td>
+<td>0.241010</td>
+<td>0.395411</td>
+<td>1.000000</td>
+<td>0.242464</td>
+<td>0.185548</td>
+<td>-0.178762</td>
+<td>0.257650</td>
+<td>0.393480</td>
+<td>0.390430</td>
+<td>0.441482</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">s1</td>
+<td>0.260061</td>
+<td>0.035277</td>
+<td>0.249777</td>
+<td>0.242464</td>
+<td>1.000000</td>
+<td>0.896663</td>
+<td>0.051519</td>
+<td>0.542207</td>
+<td>0.515503</td>
+<td>0.325717</td>
+<td>0.212022</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">s2</td>
+<td>0.219243</td>
+<td>0.142637</td>
+<td>0.261170</td>
+<td>0.185548</td>
+<td>0.896663</td>
+<td>1.000000</td>
+<td>-0.196455</td>
+<td>0.659817</td>
+<td>0.318357</td>
+<td>0.290600</td>
+<td>0.174054</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">s3</td>
+<td>-0.075181</td>
+<td>-0.379090</td>
+<td>-0.366811</td>
+<td>-0.178762</td>
+<td>0.051519</td>
+<td>-0.196455</td>
+<td>1.000000</td>
+<td>-0.738493</td>
+<td>-0.398577</td>
+<td>-0.273697</td>
+<td>-0.394789</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">s4</td>
+<td>0.203841</td>
+<td>0.332115</td>
+<td>0.413807</td>
+<td>0.257650</td>
+<td>0.542207</td>
+<td>0.659817</td>
+<td>-0.738493</td>
+<td>1.000000</td>
+<td>0.617859</td>
+<td>0.417212</td>
+<td>0.430453</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">s5</td>
+<td>0.270774</td>
+<td>0.149916</td>
+<td>0.446157</td>
+<td>0.393480</td>
+<td>0.515503</td>
+<td>0.318357</td>
+<td>-0.398577</td>
+<td>0.617859</td>
+<td>1.000000</td>
+<td>0.464669</td>
+<td>0.565883</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">s6</td>
+<td>0.301731</td>
+<td>0.208133</td>
+<td>0.388680</td>
+<td>0.390430</td>
+<td>0.325717</td>
+<td>0.290600</td>
+<td>-0.273697</td>
+<td>0.417212</td>
+<td>0.464669</td>
+<td>1.000000</td>
+<td>0.382483</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">disease_progression</td>
+<td>0.187889</td>
+<td>0.043062</td>
+<td>0.586450</td>
+<td>0.441482</td>
+<td>0.212022</td>
+<td>0.174054</td>
+<td>-0.394789</td>
+<td>0.430453</td>
+<td>0.565883</td>
+<td>0.382483</td>
+<td>1.000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>disease_progression    1.000000
 bmi                    0.586450
 s5                     0.565883

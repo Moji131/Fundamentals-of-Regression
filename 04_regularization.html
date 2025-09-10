@@ -239,7 +239,6 @@ window.Quarto = {
   <li><a href="#standardization-pipelines" id="toc-standardization-pipelines" class="nav-link" data-scroll-target="#standardization-pipelines">Standardization &amp; Pipelines</a></li>
   <li><a href="#coefficient-paths" id="toc-coefficient-paths" class="nav-link" data-scroll-target="#coefficient-paths">Coefficient Paths</a></li>
   <li><a href="#choosing-between-ridge-and-lasso" id="toc-choosing-between-ridge-and-lasso" class="nav-link" data-scroll-target="#choosing-between-ridge-and-lasso">Choosing Between Ridge and Lasso</a></li>
-  <li><a href="#parallelisation-on-nci-are-important" id="toc-parallelisation-on-nci-are-important" class="nav-link" data-scroll-target="#parallelisation-on-nci-are-important">Parallelisation on NCI ARE (Important)</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Moji131/Fundamentals-of-Regression/blob/main/04_regularization.ipynb" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/Moji131/Fundamentals-of-Regression/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -286,7 +285,7 @@ window.Quarto = {
 <p><span class="math display">\[
 \mathcal{L}_{\mathrm{Lasso}}(\boldsymbol{\beta}) = \frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2 + \alpha \sum_{j=1}^p \lvert \beta_j \rvert \,.
 \]</span> - Encourages <strong>sparsity</strong>: can set some coefficients <strong>exactly</strong> to zero. - Useful for <strong>feature selection</strong>.</p>
-<p>The <strong>regularization strength</strong> <span class="math inline">\(\\alpha \\ge 0\)</span> controls shrinkage; larger <span class="math inline">\(\\alpha\)</span> means stronger regularization.</p>
+<p>The <strong>regularization strength</strong> <span class="math inline">\(\alpha \ge 0\)</span> controls shrinkage; larger <span class="math inline">\(\alpha\)</span> means stronger regularization.</p>
 <div id="fe6f0056" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data setup: Diabetes dataset</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
@@ -413,7 +412,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="standardization-pipelines">Standardization &amp; Pipelines</h2>
 <p>Regularized linear models are sensitive to <strong>feature scaling</strong> because the penalty depends on coefficient magnitude.<br>
 Although the Diabetes features are already standardized, we demonstrate a <code>Pipeline</code> with <code>StandardScaler</code> to encourage good practice (especially for future datasets).</p>
-<div id="85b188d6" class="cell" data-execution_count="2">
+<div id="85b188d6" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ridge &amp; Lasso with cross-validation and safe parallelization for HPC (NCI ARE)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
@@ -456,11 +455,11 @@ Although the Diabetes features are already standardized, we demonstrate a <code>
 <span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>best_lasso_alpha <span class="op">=</span> alphas[best_lasso_idx]</span>
 <span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>best_ridge_alpha, best_lasso_alpha</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>(np.float64(26.366508987303554), np.float64(0.6951927961775606))</code></pre>
 </div>
 </div>
-<p><strong>Reading CV curves</strong> - Choose the <span class="math inline">\(\\alpha\)</span> that <strong>maximizes</strong> validation <span class="math inline">\(R^2\)</span> (or <strong>minimizes</strong> RMSE). - Ridge curves are usually smoother; Lasso may plateau and then drop as many coefficients are zeroed out.</p>
+<p><strong>Reading CV curves</strong> - Choose the <span class="math inline">\(\alpha\)</span> that <strong>maximizes</strong> validation <span class="math inline">\(R^2\)</span> (or <strong>minimizes</strong> RMSE). - Ridge curves are usually smoother; Lasso may plateau and then drop as many coefficients are zeroed out.</p>
 <div id="26349853" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot validation curves for Ridge and Lasso</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -525,7 +524,7 @@ Lasso (alpha=0.6952) -&gt; Test R^2: 0.463, RMSE: 53.324, MAE: 42.825</code></pr
 </section>
 <section id="coefficient-paths" class="level2">
 <h2 class="anchored" data-anchor-id="coefficient-paths">Coefficient Paths</h2>
-<p>By tracking coefficients across a grid of <span class="math inline">\(\\alpha\)</span> values, we can visualize <strong>shrinkage</strong> (Ridge) and <strong>sparsity</strong> (Lasso).</p>
+<p>By tracking coefficients across a grid of <span class="math inline">\(\alpha\)</span> values, we can visualize <strong>shrinkage</strong> (Ridge) and <strong>sparsity</strong> (Lasso).</p>
 <div id="0a8029c2" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coefficient paths for Ridge and Lasso</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -578,7 +577,7 @@ Lasso (alpha=0.6952) -&gt; Test R^2: 0.463, RMSE: 53.324, MAE: 42.825</code></pr
 </div>
 </div>
 </div>
-<p><strong>Interpreting paths</strong> - <strong>Ridge:</strong> all coefficients shrink smoothly toward <span class="math inline">\(0\)</span> as <span class="math inline">\(\\alpha\)</span> increases. - <strong>Lasso:</strong> coefficients hit <strong>exactly <span class="math inline">\(0\)</span></strong> at different <span class="math inline">\(\\alpha\)</span> thresholds <span class="math inline">\(\\Rightarrow\)</span> implicit <strong>feature selection</strong>.</p>
+<p><strong>Interpreting paths</strong> - <strong>Ridge:</strong> all coefficients shrink smoothly toward <span class="math inline">\(0\)</span> as <span class="math inline">\(\alpha\)</span> increases. - <strong>Lasso:</strong> coefficients hit <strong>exactly <span class="math inline">\(0\)</span></strong> at different <span class="math inline">\(\alpha\)</span> thresholds <span class="math inline">\(\rightarrow\)</span> implicit <strong>feature selection</strong>.</p>
 </section>
 <section id="choosing-between-ridge-and-lasso" class="level2">
 <h2 class="anchored" data-anchor-id="choosing-between-ridge-and-lasso">Choosing Between Ridge and Lasso</h2>
@@ -588,22 +587,13 @@ Lasso (alpha=0.6952) -&gt; Test R^2: 0.463, RMSE: 53.324, MAE: 42.825</code></pr
 <li><strong>Elastic Net</strong> (not covered here) blends <span class="math inline">\(L_1\)</span> and <span class="math inline">\(L_2\)</span> and can be a good default when unsure.</li>
 </ul>
 </section>
-<section id="parallelisation-on-nci-are-important" class="level2">
-<h2 class="anchored" data-anchor-id="parallelisation-on-nci-are-important">Parallelisation on NCI ARE (Important)</h2>
-<p>On some HPC Jupyter environments, <code>n_jobs=-1</code> with the default backend may raise <code>No module named '_posixsubprocess'</code>.<br>
-Wrap CV with the <strong>threading backend</strong> as shown in this notebook, or set <code>n_jobs=1</code> for compatibility.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> joblib <span class="im">import</span> parallel_backend</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> parallel_backend(<span class="st">'threading'</span>):</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># your cross_val_score(...) calls with n_jobs=-1</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
 <section id="exercises" class="level2">
 <h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
 <ol type="1">
-<li><strong>One‑SE rule:</strong> Using the CV curves, pick the largest <span class="math inline">\(\\alpha\)</span> within one standard error of the best <span class="math inline">\(R^2\)</span> (requires storing fold‑level scores). Does it generalize better?</li>
-<li><strong>Sparsity check (Lasso):</strong> For the chosen <span class="math inline">\(\\alpha\)</span>, how many coefficients are exactly zero? Which features remain?</li>
-<li><strong>Target transform:</strong> Try predicting <span class="math inline">\(\\log(1+y)\)</span> instead of <span class="math inline">\(y\)</span>. Does either model improve on <span class="math inline">\(R^2\)</span>?</li>
-<li><strong>Stability:</strong> Shuffle <code>random_state</code> in K‑fold and report the variance in the selected <span class="math inline">\(\\alpha\)</span> and test <span class="math inline">\(R^2\)</span>.</li>
+<li><strong>One‑SE rule:</strong> Using the CV curves, pick the largest <span class="math inline">\(\alpha\)</span> within one standard error of the best <span class="math inline">\(R^2\)</span> (requires storing fold‑level scores). Does it generalize better?</li>
+<li><strong>Sparsity check (Lasso):</strong> For the chosen <span class="math inline">\(\alpha\)</span>, how many coefficients are exactly zero? Which features remain?</li>
+<li><strong>Target transform:</strong> Try predicting <span class="math inline">\(\log(1+y)\)</span> instead of <span class="math inline">\(y\)</span>. Does either model improve on <span class="math inline">\(R^2\)</span>?</li>
+<li><strong>Stability:</strong> Shuffle <code>random_state</code> in K‑fold and report the variance in the selected <span class="math inline">\(\alpha\)</span> and test <span class="math inline">\(R^2\)</span>.</li>
 </ol>
 
 
