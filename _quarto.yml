@@ -1,11 +1,16 @@
 project:
   type: website
-  output-dir: _site
+  # This tells Quarto to put the rendered website files into a 'docs' folder.
+  # This is required for the standard GitHub Pages setup.
+  output-dir: docs
 
 website:
+  # The title of your website, which appears in the browser tab and sidebar.
   title: "Fundamentals of Regression"
-  navbar:
-    left:
+
+  sidebar:
+    style: "docked"
+    contents:
       - text: "Setup"
         href: 00_setup.md
       - text: "Intro"
