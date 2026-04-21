@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,7 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -67,14 +67,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5d2e30ad26079c1dae90a1fd11eba2b9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-a35d343c8bdbcb87d3b82ed68e48a46c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -102,7 +103,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -120,7 +121,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -162,9 +163,8 @@ window.Quarto = {
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="./">Fundamentals of Regression</a> 
-    </div>
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
@@ -328,7 +328,7 @@ window.Quarto = {
 <p><strong>Diabetes dataset (regression)</strong> - <strong>Target</strong>: Quantitative measure of disease progression one year after baseline. - <strong>Features</strong>: 10 baseline variables such as age, sex, BMI, blood pressure, and serum measurements. - <strong>Why start here?</strong> Small, quick to train, great for teaching core concepts.</p>
 <p><strong>Medical Insurance dataset (regression)</strong> <em>(used later)</em> - <strong>Target</strong>: <code>charges</code> (medical insurance costs) - <strong>Features</strong>: <code>age</code>, <code>sex</code>, <code>bmi</code>, <code>children</code>, <code>smoker</code>, <code>region</code> (requires encoding) - <strong>Why later?</strong> Demonstrates categorical encoding, interactions, and non-linear effects.</p>
 <div id="5e56aa1b" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and preview the Diabetes dataset (built into scikit-learn)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and preview the Diabetes dataset (built into scikit-learn)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -337,7 +337,7 @@ window.Quarto = {
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df.rename(columns<span class="op">=</span>{<span class="st">'target'</span>: <span class="st">'disease_progression'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Shape:"</span>, df.shape)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Shape: (442, 11)</code></pre>
 </div>
@@ -345,7 +345,7 @@ window.Quarto = {
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -364,7 +364,7 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.038076</td>
 <td>0.050680</td>
 <td>0.061696</td>
@@ -378,7 +378,7 @@ window.Quarto = {
 <td>151.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>-0.001882</td>
 <td>-0.044642</td>
 <td>-0.051474</td>
@@ -392,7 +392,7 @@ window.Quarto = {
 <td>75.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>0.085299</td>
 <td>0.050680</td>
 <td>0.044451</td>
@@ -406,7 +406,7 @@ window.Quarto = {
 <td>141.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
+<th data-quarto-table-cell-role="th">3</th>
 <td>-0.089063</td>
 <td>-0.044642</td>
 <td>-0.011595</td>
@@ -420,7 +420,7 @@ window.Quarto = {
 <td>206.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
+<th data-quarto-table-cell-role="th">4</th>
 <td>0.005383</td>
 <td>-0.044642</td>
 <td>-0.036385</td>
@@ -453,13 +453,13 @@ window.Quarto = {
 <p>Note: Features are already standardized (mean ~0, variance ~1). This helps many models converge quickly and makes coefficients comparable in linear models.</p>
 </blockquote>
 <div id="dda5f11f" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic EDA</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df.describe(include<span class="op">=</span><span class="st">'all'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic EDA</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df.describe(include<span class="op">=</span><span class="st">'all'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -478,7 +478,7 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">count</td>
+<th data-quarto-table-cell-role="th">count</th>
 <td>4.420000e+02</td>
 <td>4.420000e+02</td>
 <td>4.420000e+02</td>
@@ -492,7 +492,7 @@ window.Quarto = {
 <td>442.000000</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">mean</td>
+<th data-quarto-table-cell-role="th">mean</th>
 <td>-2.511817e-19</td>
 <td>1.230790e-17</td>
 <td>-2.245564e-16</td>
@@ -506,7 +506,7 @@ window.Quarto = {
 <td>152.133484</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">std</td>
+<th data-quarto-table-cell-role="th">std</th>
 <td>4.761905e-02</td>
 <td>4.761905e-02</td>
 <td>4.761905e-02</td>
@@ -520,7 +520,7 @@ window.Quarto = {
 <td>77.093005</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">min</td>
+<th data-quarto-table-cell-role="th">min</th>
 <td>-1.072256e-01</td>
 <td>-4.464164e-02</td>
 <td>-9.027530e-02</td>
@@ -534,7 +534,7 @@ window.Quarto = {
 <td>25.000000</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">25%</td>
+<th data-quarto-table-cell-role="th">25%</th>
 <td>-3.729927e-02</td>
 <td>-4.464164e-02</td>
 <td>-3.422907e-02</td>
@@ -548,7 +548,7 @@ window.Quarto = {
 <td>87.000000</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">50%</td>
+<th data-quarto-table-cell-role="th">50%</th>
 <td>5.383060e-03</td>
 <td>-4.464164e-02</td>
 <td>-7.283766e-03</td>
@@ -562,7 +562,7 @@ window.Quarto = {
 <td>140.500000</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">75%</td>
+<th data-quarto-table-cell-role="th">75%</th>
 <td>3.807591e-02</td>
 <td>5.068012e-02</td>
 <td>3.124802e-02</td>
@@ -576,7 +576,7 @@ window.Quarto = {
 <td>211.500000</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">max</td>
+<th data-quarto-table-cell-role="th">max</th>
 <td>1.107267e-01</td>
 <td>5.068012e-02</td>
 <td>1.705552e-01</td>
@@ -604,12 +604,12 @@ window.Quarto = {
 <li><strong>Target behavior</strong>: Understanding the spread of <code>disease_progression</code> will help interpret errors later.</li>
 </ul>
 <div id="4a570802" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograms for features and target</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograms for features and target</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> df.hist(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>), bins<span class="op">=</span><span class="dv">20</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -620,7 +620,7 @@ window.Quarto = {
 </div>
 <p><strong>Why histograms?</strong> - Quick sense of distribution shape (normality, skewness, outliers). - Helps anticipate when certain models/metrics might struggle.</p>
 <div id="0d38b459" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plots: individual features vs target</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plots: individual features vs target</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>features_to_plot <span class="op">=</span> [<span class="st">'bmi'</span>, <span class="st">'bp'</span>, <span class="st">'s5'</span>]</span>
@@ -630,7 +630,7 @@ window.Quarto = {
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(col)</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'disease_progression'</span>)</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss"> vs disease_progression'</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -668,15 +668,15 @@ window.Quarto = {
 <li>Compute the correlation matrix and identify the top-3 features most correlated with the target.</li>
 </ol>
 <div id="cb6bd18c" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Optional) Correlation matrix to support Exercise 2</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Optional) Correlation matrix to support Exercise 2</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>corr <span class="op">=</span> df.corr(numeric_only<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>display(corr)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>corr[<span class="st">'disease_progression'</span>].sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>corr[<span class="st">'disease_progression'</span>].sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -695,7 +695,7 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">age</td>
+<th data-quarto-table-cell-role="th">age</th>
 <td>1.000000</td>
 <td>0.173737</td>
 <td>0.185085</td>
@@ -709,7 +709,7 @@ window.Quarto = {
 <td>0.187889</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">sex</td>
+<th data-quarto-table-cell-role="th">sex</th>
 <td>0.173737</td>
 <td>1.000000</td>
 <td>0.088161</td>
@@ -723,7 +723,7 @@ window.Quarto = {
 <td>0.043062</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">bmi</td>
+<th data-quarto-table-cell-role="th">bmi</th>
 <td>0.185085</td>
 <td>0.088161</td>
 <td>1.000000</td>
@@ -737,7 +737,7 @@ window.Quarto = {
 <td>0.586450</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">bp</td>
+<th data-quarto-table-cell-role="th">bp</th>
 <td>0.335428</td>
 <td>0.241010</td>
 <td>0.395411</td>
@@ -751,7 +751,7 @@ window.Quarto = {
 <td>0.441482</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">s1</td>
+<th data-quarto-table-cell-role="th">s1</th>
 <td>0.260061</td>
 <td>0.035277</td>
 <td>0.249777</td>
@@ -765,7 +765,7 @@ window.Quarto = {
 <td>0.212022</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">s2</td>
+<th data-quarto-table-cell-role="th">s2</th>
 <td>0.219243</td>
 <td>0.142637</td>
 <td>0.261170</td>
@@ -779,7 +779,7 @@ window.Quarto = {
 <td>0.174054</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">s3</td>
+<th data-quarto-table-cell-role="th">s3</th>
 <td>-0.075181</td>
 <td>-0.379090</td>
 <td>-0.366811</td>
@@ -793,7 +793,7 @@ window.Quarto = {
 <td>-0.394789</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">s4</td>
+<th data-quarto-table-cell-role="th">s4</th>
 <td>0.203841</td>
 <td>0.332115</td>
 <td>0.413807</td>
@@ -807,7 +807,7 @@ window.Quarto = {
 <td>0.430453</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">s5</td>
+<th data-quarto-table-cell-role="th">s5</th>
 <td>0.270774</td>
 <td>0.149916</td>
 <td>0.446157</td>
@@ -821,7 +821,7 @@ window.Quarto = {
 <td>0.565883</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">s6</td>
+<th data-quarto-table-cell-role="th">s6</th>
 <td>0.301731</td>
 <td>0.208133</td>
 <td>0.388680</td>
@@ -835,7 +835,7 @@ window.Quarto = {
 <td>0.382483</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">disease_progression</td>
+<th data-quarto-table-cell-role="th">disease_progression</th>
 <td>0.187889</td>
 <td>0.043062</td>
 <td>0.586450</td>
@@ -925,13 +925,14 @@ Name: disease_progression, dtype: float64</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
