@@ -11,8 +11,8 @@ website:
   sidebar:
     style: "docked"
     contents:
-      - text: "Setup"
-        href: 00_setup.md
+      - text: "00_workshop_guide"
+        href: 00_workshop_guide.ipynb
       - text: "Intro"
         href: 01_introduction_to_regression.ipynb
       - text: "Linear Regression"
@@ -27,6 +27,8 @@ website:
         href: 06_neural_network.ipynb
       - text: "Decision Trees"
         href: 07_tree_regression.ipynb
+      - text: 📦 Download All Notebooks
+        href: notebooks.zip
   repo-url: "https://github.com/Moji131/Fundamentals-of-Regression"   # <-- replace after creating repo
   repo-actions: [source, issue]
 
