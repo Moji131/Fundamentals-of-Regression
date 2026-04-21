@@ -175,8 +175,8 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./00_setup.md" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Setup</span></a>
+  <a href="./00_workshop_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">00_workshop_guide</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -221,6 +221,12 @@ window.Quarto = {
  <span class="menu-text">Decision Trees</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks.zip" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📦 Download All Notebooks</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -231,10 +237,7 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction-to-regression" id="toc-introduction-to-regression" class="nav-link active" data-scroll-target="#introduction-to-regression">Introduction to Regression</a>
-  <ul class="collapse">
-  <li><a href="#workshop-logistics-nci-are-setup" id="toc-workshop-logistics-nci-are-setup" class="nav-link" data-scroll-target="#workshop-logistics-nci-are-setup">Workshop logistics: NCI ARE &amp; setup</a></li>
-  <li><a href="#what-is-regression-how-is-it-different-from-classification" id="toc-what-is-regression-how-is-it-different-from-classification" class="nav-link" data-scroll-target="#what-is-regression-how-is-it-different-from-classification">What is Regression? How is it different from Classification?</a>
+  <li><a href="#what-is-regression-how-is-it-different-from-classification" id="toc-what-is-regression-how-is-it-different-from-classification" class="nav-link active" data-scroll-target="#what-is-regression-how-is-it-different-from-classification">What is Regression? How is it different from Classification?</a>
   <ul class="collapse">
   <li><a href="#common-model-families-we-will-study" id="toc-common-model-families-we-will-study" class="nav-link" data-scroll-target="#common-model-families-we-will-study">Common Model Families We Will Study</a></li>
   </ul></li>
@@ -246,7 +249,6 @@ window.Quarto = {
   </ul></li>
   <li><a href="#what-comes-next" id="toc-what-comes-next" class="nav-link" data-scroll-target="#what-comes-next">What Comes Next</a></li>
   <li><a href="#short-exercises-optional" id="toc-short-exercises-optional" class="nav-link" data-scroll-target="#short-exercises-optional">Short Exercises (Optional)</a></li>
-  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Moji131/Fundamentals-of-Regression/blob/main/01_introduction_to_regression.ipynb" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/Moji131/Fundamentals-of-Regression/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -272,29 +274,14 @@ window.Quarto = {
 </header>
 
 
-<section id="introduction-to-regression" class="level1">
-<h1>Introduction to Regression</h1>
 <p>Welcome! In this lesson we will introduce <strong>regression</strong> as a supervised learning task for predicting <strong>continuous</strong> outcomes. We’ll set the stage for the course, outline the models we will study, and load our first dataset (the <em>Diabetes</em> dataset from <code>scikit-learn</code>).</p>
 <p><strong>Learning objectives</strong> - Understand the goal of regression and how it differs from classification. - Recognize common regression model families and when to use them. - Get familiar with the Diabetes dataset we will use throughout the first part of the course. - Perform a light <strong>EDA</strong> (exploratory data analysis) to understand features and the target.</p>
-<section id="workshop-logistics-nci-are-setup" class="level2">
-<h2 class="anchored" data-anchor-id="workshop-logistics-nci-are-setup">Workshop logistics: NCI ARE &amp; setup</h2>
-<ul>
-<li><strong>When:</strong> Thursday 11 September 2025, 9:30am–1:30pm AEST (online)</li>
-<li><strong>Where:</strong> NCI <strong>ARE</strong> platform via your web browser (no local installs). A reliable internet connection is required; a second monitor is recommended.</li>
-<li><strong>Bring:</strong> Your own computer, browser, and your NCI account ready. Setup instructions will be provided ahead of time.</li>
-<li><strong>Who:</strong> Researchers from Australian universities and Australian researchers using (or planning to use) <strong>NCI</strong>.</li>
-</ul>
 <p><strong>Prerequisites</strong> - Basic Python (e.g., Intro to Python / Software Carpentry) and fundamental statistics. - No prior machine learning experience is required.</p>
-<p><strong>Performance &amp; parallelisation (preview)</strong> - Many <code>scikit-learn</code> estimators support <strong>implicit parallelism</strong> with <code>n_jobs=-1</code> (use all available cores on ARE). We will use this later for tree ensembles and cross‑validation. - For Bayesian inference with <strong>cmdstanpy</strong>, we will demonstrate running <strong>multiple chains in parallel</strong> on ARE. - We will also discuss lightweight tips for using NCI resources efficiently (e.g., monitoring, avoiding oversubscription).</p>
-<blockquote class="blockquote">
-<p>Details and hands‑on examples will appear in later notebooks (Random Forests, Model Evaluation, and Bayesian Regression).</p>
-</blockquote>
-</section>
 <section id="what-is-regression-how-is-it-different-from-classification" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-regression-how-is-it-different-from-classification">What is Regression? How is it different from Classification?</h2>
 <ul>
-<li><strong>Classification:</strong> predict a <em>category/label</em> (e.g., healthy vs.&nbsp;sick).</li>
 <li><strong>Regression:</strong> predict a <em>continuous value</em> (e.g., blood pressure, medical costs).</li>
+<li><strong>Classification:</strong> predict a <em>category/label</em> (e.g., healthy vs.&nbsp;sick).</li>
 </ul>
 <p>We assume a data-generating process of the form <span class="math display">\[
 \hat{y} = f(X) + \varepsilon
@@ -314,7 +301,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="biasvariance-intuition">Bias–Variance (Intuition)</h2>
 <p>When choosing models, we balance <strong>bias</strong> (error from overly simple assumptions) and <strong>variance</strong> (error from sensitivity to the specific training data).</p>
 <p>The <strong>expected generalization error</strong> can be decomposed (for squared loss) into bias, variance, and irreducible noise: <span class="math display">\[
-\mathbb{E}\left[(y - \hat{f}(X))^2\right] = \underbrace{\text{Bias}^2}_{\text{underfitting}} + \underbrace{\text{Variance}}_{\\text{overfitting}} + \underbrace{\sigma^2}_{\text{noise}}.
+\mathbb{E}\left[(y - \hat{f}(X))^2\right] = \underbrace{\text{Bias}^2}_{\text{underfitting}} + \underbrace{\text{Variance}}_{\text{overfitting}} + \underbrace{\sigma^2}_{\text{noise}}.
 \]</span></p>
 <ul>
 <li><strong>High bias</strong> <span class="math inline">\(\rightarrow\)</span> underfitting (model too simple).</li>
@@ -327,21 +314,25 @@ window.Quarto = {
 <p>We will start with the <strong>Diabetes</strong> dataset that ships with <code>scikit-learn</code> (small, clean, numeric). Later, we will bring in the <strong>Medical Insurance</strong> dataset (real-world, mixed numeric &amp; categorical features) to practice preprocessing and feature engineering.</p>
 <p><strong>Diabetes dataset (regression)</strong> - <strong>Target</strong>: Quantitative measure of disease progression one year after baseline. - <strong>Features</strong>: 10 baseline variables such as age, sex, BMI, blood pressure, and serum measurements. - <strong>Why start here?</strong> Small, quick to train, great for teaching core concepts.</p>
 <p><strong>Medical Insurance dataset (regression)</strong> <em>(used later)</em> - <strong>Target</strong>: <code>charges</code> (medical insurance costs) - <strong>Features</strong>: <code>age</code>, <code>sex</code>, <code>bmi</code>, <code>children</code>, <code>smoker</code>, <code>region</code> (requires encoding) - <strong>Why later?</strong> Demonstrates categorical encoding, interactions, and non-linear effects.</p>
-<div id="5e56aa1b" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and preview the Diabetes dataset (built into scikit-learn)</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_diabetes(as_frame<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> data.frame.copy()  <span class="co"># includes features and target under 'target'</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df.rename(columns<span class="op">=</span>{<span class="st">'target'</span>: <span class="st">'disease_progression'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Shape:"</span>, df.shape)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="d3e3e610" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install pandas matplotlib scikit-learn</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="5e56aa1b" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and preview the Diabetes dataset (built into scikit-learn)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_diabetes(as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> data.frame.copy()  <span class="co"># includes features and target under 'target'</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>df.rename(columns<span class="op">=</span>{<span class="st">'target'</span>: <span class="st">'disease_progression'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Shape:"</span>, df.shape)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Shape: (442, 11)</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="1">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
 
@@ -452,10 +443,10 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p>Note: Features are already standardized (mean ~0, variance ~1). This helps many models converge quickly and makes coefficients comparable in linear models.</p>
 </blockquote>
-<div id="dda5f11f" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic EDA</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df.describe(include<span class="op">=</span><span class="st">'all'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div id="dda5f11f" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic EDA</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df.describe(include<span class="op">=</span><span class="st">'all'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
 
@@ -604,33 +595,12 @@ window.Quarto = {
 <li><strong>Target behavior</strong>: Understanding the spread of <code>disease_progression</code> will help interpret errors later.</li>
 </ul>
 <div id="4a570802" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograms for features and target</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> df.hist(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>), bins<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="01_introduction_to_regression_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p><strong>Why histograms?</strong> - Quick sense of distribution shape (normality, skewness, outliers). - Helps anticipate when certain models/metrics might struggle.</p>
-<div id="0d38b459" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plots: individual features vs target</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograms for features and target</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>features_to_plot <span class="op">=</span> [<span class="st">'bmi'</span>, <span class="st">'bp'</span>, <span class="st">'s5'</span>]</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> features_to_plot:</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">4</span>))</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    plt.scatter(df[col], df[<span class="st">'disease_progression'</span>], alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(col)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'disease_progression'</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss"> vs disease_progression'</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> df.hist(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>), bins<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -638,17 +608,38 @@ window.Quarto = {
 </figure>
 </div>
 </div>
+</div>
+<p><strong>Why histograms?</strong> - Quick sense of distribution shape (normality, skewness, outliers). - Helps anticipate when certain models/metrics might struggle.</p>
+<div id="0d38b459" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plots: individual features vs target</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>features_to_plot <span class="op">=</span> [<span class="st">'bmi'</span>, <span class="st">'bp'</span>, <span class="st">'s5'</span>]</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> features_to_plot:</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">4</span>))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    plt.scatter(df[col], df[<span class="st">'disease_progression'</span>], alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(col)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'disease_progression'</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss"> vs disease_progression'</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_introduction_to_regression_files/figure-html/cell-5-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="01_introduction_to_regression_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_introduction_to_regression_files/figure-html/cell-5-output-3.png" class="img-fluid figure-img"></p>
+<p><img src="01_introduction_to_regression_files/figure-html/cell-6-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_introduction_to_regression_files/figure-html/cell-6-output-3.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -668,10 +659,10 @@ window.Quarto = {
 <li>Compute the correlation matrix and identify the top-3 features most correlated with the target.</li>
 </ol>
 <div id="cb6bd18c" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Optional) Correlation matrix to support Exercise 2</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>corr <span class="op">=</span> df.corr(numeric_only<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>display(corr)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>corr[<span class="st">'disease_progression'</span>].sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Optional) Correlation matrix to support Exercise 2</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>corr <span class="op">=</span> df.corr(numeric_only<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>display(corr)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>corr[<span class="st">'disease_progression'</span>].sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 
@@ -870,7 +861,6 @@ Name: disease_progression, dtype: float64</code></pre>
 </div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
