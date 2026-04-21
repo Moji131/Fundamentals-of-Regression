@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Bayesian Regression &amp; Uncertainty – Fundamentals of Regression</title>
+<title>Bayesian Regression, Minimally – Fundamentals of Regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,7 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -103,39 +103,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -237,15 +205,14 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#bayesian-linear-regression" id="toc-bayesian-linear-regression" class="nav-link active" data-scroll-target="#bayesian-linear-regression">Bayesian Linear Regression</a>
-  <ul class="collapse">
-  <li><a href="#ordinary-least-squares-linear-regression" id="toc-ordinary-least-squares-linear-regression" class="nav-link" data-scroll-target="#ordinary-least-squares-linear-regression">Ordinary Least Squares Linear Regression</a></li>
-  <li><a href="#estimated-average-noise-in-predictions-of-linear-regression" id="toc-estimated-average-noise-in-predictions-of-linear-regression" class="nav-link" data-scroll-target="#estimated-average-noise-in-predictions-of-linear-regression">Estimated average noise in predictions of linear regression</a></li>
-  </ul></li>
-  <li><a href="#credible-predictive-intervals-via-sampling" id="toc-credible-predictive-intervals-via-sampling" class="nav-link" data-scroll-target="#credible-predictive-intervals-via-sampling">Credible &amp; Predictive Intervals via Sampling</a></li>
-  <li><a href="#bootstrap-approximation-frequentist-but-practical" id="toc-bootstrap-approximation-frequentist-but-practical" class="nav-link" data-scroll-target="#bootstrap-approximation-frequentist-but-practical">Bootstrap Approximation (Frequentist but Practical)</a></li>
-  <li><a href="#confidence-vs-credible-intervals-recap" id="toc-confidence-vs-credible-intervals-recap" class="nav-link" data-scroll-target="#confidence-vs-credible-intervals-recap">Confidence vs Credible Intervals (Recap)</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#create-a-tiny-synthetic-dataset" id="toc-create-a-tiny-synthetic-dataset" class="nav-link active" data-scroll-target="#create-a-tiny-synthetic-dataset">1. Create a tiny synthetic dataset</a></li>
+  <li><a href="#define-a-prior-over-the-slope" id="toc-define-a-prior-over-the-slope" class="nav-link" data-scroll-target="#define-a-prior-over-the-slope">2. Define a prior over the slope</a></li>
+  <li><a href="#compute-a-simple-likelihood" id="toc-compute-a-simple-likelihood" class="nav-link" data-scroll-target="#compute-a-simple-likelihood">3. Compute a simple likelihood</a></li>
+  <li><a href="#combine-prior-and-likelihood-to-get-the-posterior" id="toc-combine-prior-and-likelihood-to-get-the-posterior" class="nav-link" data-scroll-target="#combine-prior-and-likelihood-to-get-the-posterior">4. Combine prior and likelihood to get the posterior</a></li>
+  <li><a href="#find-the-most-plausible-slope-and-compare-with-the-true-one" id="toc-find-the-most-plausible-slope-and-compare-with-the-true-one" class="nav-link" data-scroll-target="#find-the-most-plausible-slope-and-compare-with-the-true-one">5. Find the most plausible slope and compare with the true one</a></li>
+  <li><a href="#plot-the-fitted-line" id="toc-plot-the-fitted-line" class="nav-link" data-scroll-target="#plot-the-fitted-line">6. Plot the fitted line</a></li>
+  <li><a href="#bayesian-regression-with-scikit-learn" id="toc-bayesian-regression-with-scikit-learn" class="nav-link" data-scroll-target="#bayesian-regression-with-scikit-learn">Bayesian Regression with scikit-learn</a></li>
+  <li><a href="#main-takeaway" id="toc-main-takeaway" class="nav-link" data-scroll-target="#main-takeaway">8. Main takeaway</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Moji131/Fundamentals-of-Regression/blob/main/05_bayesian_regression.ipynb" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/Moji131/Fundamentals-of-Regression/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -254,7 +221,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Bayesian Regression &amp; Uncertainty</h1>
+<h1 class="title">Bayesian Regression, Minimally</h1>
 </div>
 
 
@@ -271,496 +238,245 @@ window.Quarto = {
 </header>
 
 
-<p>In this lesson we introduce <strong>Bayesian linear regression</strong> and <strong>uncertainty quantification</strong>. We use: - A <strong>closed-form</strong> Bayesian linear regression under conjugate priors (Normal prior on coefficients), - A practical <strong>bootstrap</strong> approximation to predictive uncertainty.</p>
-<p>We compare intervals to OLS and discuss when each approach is appropriate.</p>
-<p><strong>Learning objectives</strong> - Derive and implement a <strong>closed-form</strong> Bayesian linear regression in NumPy. - Compute <strong>credible</strong> and <strong>predictive</strong> intervals via posterior sampling. - Use <strong>bootstrap</strong> resampling to approximate predictive uncertainty. - Compare OLS CIs vs Bayesian CrIs; understand their interpretations.</p>
-<section id="bayesian-linear-regression" class="level2">
-<h2 class="anchored" data-anchor-id="bayesian-linear-regression">Bayesian Linear Regression</h2>
-<p>Assume the standard linear model <span class="math display">\[
-\mathbf{y} \mid X, \boldsymbol{\beta}, \sigma^2 \sim \mathcal{N}(X\boldsymbol{\beta}, \ \sigma^2 I_n),
-\]</span> with a <strong>Gaussian prior</strong> on coefficients (ridge-like prior) <span class="math display">\[
-\boldsymbol{\beta} \sim \mathcal{N}\!\left(\mathbf{0}, \ \tau^2 I_p\right).
-\]</span></p>
-<p>If we <strong>treat <span class="math inline">\(\sigma^2\)</span> as known</strong> (or plug in an estimate), the <strong>posterior</strong> for <span class="math inline">\(\boldsymbol{\beta}\)</span> is Gaussian: <span class="math display">\[
-\Sigma_{\text{post}} \;=\; \left(\frac{1}{\sigma^2}X^\top X \;+\; \frac{1}{\tau^2}I_p \right)^{-1}, \qquad
-\boldsymbol{\beta}_{\text{post}} \;=\; \Sigma_{\text{post}} \left(\frac{1}{\sigma^2}X^\top \mathbf{y}\right).
-\]</span></p>
-<p>For a new sample <span class="math inline">\(x_*\)</span>, the <strong>posterior predictive</strong> distribution is approximately <span class="math display">\[
-y_* \mid x_*, \mathcal{D} \ \sim\ \mathcal{N}\!\Big(x_*^\top \boldsymbol{\beta}_{\text{post}},\ \underbrace{\sigma^2}_{\text{noise}} \;+\; \underbrace{x_*^\top \Sigma_{\text{post}} x_*}_{\text{parameter uncertainty}}\Big).
-\]</span></p>
-<blockquote class="blockquote">
-<p>In practice, we will <strong>estimate <span class="math inline">\(\sigma^2\)</span></strong> from OLS residuals (empirical Bayes). This keeps the implementation simple and fast.</p>
-</blockquote>
-<div id="e16f5c3e" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Diabetes dataset and build OLS baseline</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="f56277ae" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Data</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_diabetes(as_frame<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> data.frame.copy()</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df.rename(columns<span class="op">=</span>{<span class="st">'target'</span>: <span class="st">'disease_progression'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">age</th>
-<th data-quarto-table-cell-role="th">sex</th>
-<th data-quarto-table-cell-role="th">bmi</th>
-<th data-quarto-table-cell-role="th">bp</th>
-<th data-quarto-table-cell-role="th">s1</th>
-<th data-quarto-table-cell-role="th">s2</th>
-<th data-quarto-table-cell-role="th">s3</th>
-<th data-quarto-table-cell-role="th">s4</th>
-<th data-quarto-table-cell-role="th">s5</th>
-<th data-quarto-table-cell-role="th">s6</th>
-<th data-quarto-table-cell-role="th">disease_progression</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>0.038076</td>
-<td>0.050680</td>
-<td>0.061696</td>
-<td>0.021872</td>
-<td>-0.044223</td>
-<td>-0.034821</td>
-<td>-0.043401</td>
-<td>-0.002592</td>
-<td>0.019907</td>
-<td>-0.017646</td>
-<td>151.0</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>-0.001882</td>
-<td>-0.044642</td>
-<td>-0.051474</td>
-<td>-0.026328</td>
-<td>-0.008449</td>
-<td>-0.019163</td>
-<td>0.074412</td>
-<td>-0.039493</td>
-<td>-0.068332</td>
-<td>-0.092204</td>
-<td>75.0</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>0.085299</td>
-<td>0.050680</td>
-<td>0.044451</td>
-<td>-0.005670</td>
-<td>-0.045599</td>
-<td>-0.034194</td>
-<td>-0.032356</td>
-<td>-0.002592</td>
-<td>0.002861</td>
-<td>-0.025930</td>
-<td>141.0</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>-0.089063</td>
-<td>-0.044642</td>
-<td>-0.011595</td>
-<td>-0.036656</td>
-<td>0.012191</td>
-<td>0.024991</td>
-<td>-0.036038</td>
-<td>0.034309</td>
-<td>0.022688</td>
-<td>-0.009362</td>
-<td>206.0</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>0.005383</td>
-<td>-0.044642</td>
-<td>-0.036385</td>
-<td>0.021872</td>
-<td>0.003935</td>
-<td>0.015596</td>
-<td>0.008142</td>
-<td>-0.002592</td>
-<td>-0.031988</td>
-<td>-0.046641</td>
-<td>135.0</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">...</th>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">437</th>
-<td>0.041708</td>
-<td>0.050680</td>
-<td>0.019662</td>
-<td>0.059744</td>
-<td>-0.005697</td>
-<td>-0.002566</td>
-<td>-0.028674</td>
-<td>-0.002592</td>
-<td>0.031193</td>
-<td>0.007207</td>
-<td>178.0</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">438</th>
-<td>-0.005515</td>
-<td>0.050680</td>
-<td>-0.015906</td>
-<td>-0.067642</td>
-<td>0.049341</td>
-<td>0.079165</td>
-<td>-0.028674</td>
-<td>0.034309</td>
-<td>-0.018114</td>
-<td>0.044485</td>
-<td>104.0</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">439</th>
-<td>0.041708</td>
-<td>0.050680</td>
-<td>-0.015906</td>
-<td>0.017293</td>
-<td>-0.037344</td>
-<td>-0.013840</td>
-<td>-0.024993</td>
-<td>-0.011080</td>
-<td>-0.046883</td>
-<td>0.015491</td>
-<td>132.0</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">440</th>
-<td>-0.045472</td>
-<td>-0.044642</td>
-<td>0.039062</td>
-<td>0.001215</td>
-<td>0.016318</td>
-<td>0.015283</td>
-<td>-0.028674</td>
-<td>0.026560</td>
-<td>0.044529</td>
-<td>-0.025930</td>
-<td>220.0</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">441</th>
-<td>-0.045472</td>
-<td>-0.044642</td>
-<td>-0.073030</td>
-<td>-0.081413</td>
-<td>0.083740</td>
-<td>0.027809</td>
-<td>0.173816</td>
-<td>-0.039493</td>
-<td>-0.004222</td>
-<td>0.003064</td>
-<td>57.0</td>
-</tr>
-</tbody>
-</table>
-
-<p>442 rows × 11 columns</p>
-</div>
-</div>
-</div>
-<div id="d46a0907" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df.drop(columns<span class="op">=</span>[<span class="st">'disease_progression'</span>]).values</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">'disease_progression'</span>].values</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Train/test split</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<section id="ordinary-least-squares-linear-regression" class="level3">
-<h3 class="anchored" data-anchor-id="ordinary-least-squares-linear-regression">Ordinary Least Squares Linear Regression</h3>
-<div id="87332a0f" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Add intercept column</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>X_train_i <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(X_train)), X_train])</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>X_test_i  <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(X_test)),  X_test])</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>feature_names <span class="op">=</span> [<span class="st">'intercept'</span>] <span class="op">+</span> <span class="bu">list</span>(df.drop(columns<span class="op">=</span>[<span class="st">'disease_progression'</span>]).columns)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># OLS baseline (for comparison)</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>ols <span class="op">=</span> LinearRegression(fit_intercept<span class="op">=</span><span class="va">False</span>)  <span class="co"># intercept already in X_*_i</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>ols.fit(X_train_i, y_train)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>y_pred_ols <span class="op">=</span> ols.predict(X_test_i)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ols_rmse <span class="op">=</span> np.sqrt(mean_squared_error(y_test, y_pred_ols))</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>ols_r2   <span class="op">=</span> r2_score(y_test, y_pred_ols)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"OLS Test RMSE: </span><span class="sc">{</span>ols_rmse<span class="sc">:.3f}</span><span class="ss">, R^2: </span><span class="sc">{</span>ols_r2<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>OLS Test RMSE: 53.853, R^2: 0.453</code></pre>
-</div>
-</div>
-</section>
-<section id="estimated-average-noise-in-predictions-of-linear-regression" class="level3">
-<h3 class="anchored" data-anchor-id="estimated-average-noise-in-predictions-of-linear-regression">Estimated average noise in predictions of linear regression</h3>
-<div id="43b92c40" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate sigma^2 from OLS residuals (train set) for empirical Bayes</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>y_hat_train <span class="op">=</span> ols.predict(X_train_i)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>resid <span class="op">=</span> y_train <span class="op">-</span> y_hat_train</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>n, p <span class="op">=</span> X_train_i.shape</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>sigma2_hat <span class="op">=</span> (resid <span class="op">@</span> resid) <span class="op">/</span> (n <span class="op">-</span> p)  <span class="co"># unbiased estimate if model is well-specified</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Estimated sigma^2_hat (train OLS residual variance):"</span>, <span class="bu">round</span>(<span class="bu">float</span>(sigma2_hat), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Estimated sigma^2_hat (train OLS residual variance): 2960.813</code></pre>
-</div>
-</div>
-<div id="453e663a" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Closed-form Bayesian linear regression (Normal prior on beta)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Hyperparameter: prior std tau (tuneable). Smaller -&gt; stronger shrinkage.</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>tau <span class="op">=</span> <span class="dv">100</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>I <span class="op">=</span> np.eye(X_train_i.shape[<span class="dv">1</span>])</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>XtX <span class="op">=</span> X_train_i.T <span class="op">@</span> X_train_i</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>Xty <span class="op">=</span> X_train_i.T <span class="op">@</span> y_train</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>Sigma_post <span class="op">=</span> np.linalg.inv((XtX <span class="op">/</span> sigma2_hat) <span class="op">+</span> (I <span class="op">/</span> (tau<span class="op">**</span><span class="dv">2</span>)))</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>beta_post  <span class="op">=</span> Sigma_post <span class="op">@</span> (Xty <span class="op">/</span> sigma2_hat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="76c9ef40" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coefficients</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>beta_post</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
-<pre><code>array([ 151.5748261 ,   44.6760888 , -157.03826861,  430.76561109,
-        278.31508518,  -49.83515387,  -78.85649793, -186.4994001 ,
-        138.63049196,  328.27442616,  103.67433555])</code></pre>
-</div>
-</div>
-<div id="457e4179" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Uncertainty (std) in coefficients</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Sigma_post[:<span class="dv">5</span>, :<span class="dv">5</span>]  <span class="co"># show top-left 5x5 block</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
-<pre><code>array([[ 8.40552432e+00, -3.36435602e+00,  5.60889493e-01,
-        -3.31728348e+00, -7.67202776e-01],
-       [-3.36435602e+00,  3.14644979e+03, -2.99012083e+02,
-        -7.59670516e+01, -4.42309282e+02],
-       [ 5.60889493e-01, -2.99012083e+02,  3.04200335e+03,
-         3.22472208e+02, -3.26905399e+02],
-       [-3.31728348e+00, -7.59670516e+01,  3.22472208e+02,
-         3.50525851e+03, -6.33608476e+02],
-       [-7.67202776e-01, -4.42309282e+02, -3.26905399e+02,
-        -6.33608476e+02,  3.19338604e+03]])</code></pre>
-</div>
-</div>
-<div id="6595b755" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictive mean on test set</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_mean_post <span class="op">=</span> X_test_i <span class="op">@</span> beta_post</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictive variance: sigma^2 + x^T Sigma_post x  (diagonal, for each test point)</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># param_var = np.sum(X_test_i @ Sigma_post * X_test_i, axis=1)  # diag(X Sigma_post X^T)</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># y_pred_var = sigma2_hat + param_var</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="d346c2ed" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> y_mean_post <span class="op">-</span> y_test</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>rel_errors <span class="op">=</span> errors <span class="op">/</span> y_test</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>plt.hist(rel_errors, bins<span class="op">=</span><span class="dv">30</span>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Relative Error (Predicted - Actual) / Actual"</span>)</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Frequency"</span>)</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Distribution of Relative Errors"</span>)</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Mean relative error:"</span>, np.mean(rel_errors))</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Median relative error:"</span>, np.median(rel_errors))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="05_bayesian_regression_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Mean relative error: 0.16753707623461853
-Median relative error: 0.022010020708090185</code></pre>
-</div>
-</div>
-<div id="a39830bb" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute test metrics using posterior mean (point predictions)</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>rmse_bayes_mean <span class="op">=</span> np.sqrt(mean_squared_error(y_test, y_mean_post))</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>r2_bayes_mean   <span class="op">=</span> r2_score(y_test, y_mean_post)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Posterior-mean Test RMSE: </span><span class="sc">{</span>rmse_bayes_mean<span class="sc">:.3f}</span><span class="ss">, R^2: </span><span class="sc">{</span>r2_bayes_mean<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Posterior-mean Test RMSE: 53.556, R^2: 0.459</code></pre>
-</div>
-</div>
-</section>
-</section>
-<section id="credible-predictive-intervals-via-sampling" class="level2">
-<h2 class="anchored" data-anchor-id="credible-predictive-intervals-via-sampling">Credible &amp; Predictive Intervals via Sampling</h2>
-<p>We draw <span class="math inline">\(S\)</span> samples <span class="math inline">\(\boldsymbol{\beta}^{(s)} \sim \mathcal{N}(\boldsymbol{\beta}_{\text{post}}, \Sigma_{\text{post}})\)</span> and compute predictive draws: <span class="math display">\[
-y_*^{(s)} = x_*^\top \boldsymbol{\beta}^{(s)} + \varepsilon^{(s)}, \quad \varepsilon^{(s)} \sim \mathcal{N}(0, \sigma^2).
-\]</span> Taking percentiles across <span class="math inline">\(\{y_*^{(s)}\}\)</span> yields <strong>prediction intervals</strong>; using percentiles of <span class="math inline">\(x_*^\top \boldsymbol{\beta}^{(s)}\)</span> yields <strong>credible intervals</strong> for the mean prediction.</p>
-<div id="120012fc" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior sampling for intervals</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> <span class="dv">2000</span>  <span class="co"># number of posterior samples</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>beta_samples <span class="op">=</span> np.random.multivariate_normal(mean<span class="op">=</span>beta_post, cov<span class="op">=</span>Sigma_post, size<span class="op">=</span>S)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Credible intervals for mean prediction (no noise term)</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>y_mean_samples <span class="op">=</span> beta_samples <span class="op">@</span> X_test_i.T  <span class="co"># shape (S, n_test)</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Prediction intervals (include observation noise)</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> np.random.normal(loc<span class="op">=</span><span class="fl">0.0</span>, scale<span class="op">=</span>np.sqrt(sigma2_hat), size<span class="op">=</span>y_mean_samples.shape)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>y_pred_samples <span class="op">=</span> y_mean_samples <span class="op">+</span> eps</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Summaries (pointwise 95% intervals)</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pct(a, q): <span class="cf">return</span> np.percentile(a, q, axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>ci_lo, ci_hi <span class="op">=</span> pct(y_mean_samples, <span class="fl">2.5</span>), pct(y_mean_samples, <span class="fl">97.5</span>)</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>pi_lo, pi_hi <span class="op">=</span> pct(y_pred_samples, <span class="fl">2.5</span>), pct(y_pred_samples, <span class="fl">97.5</span>)</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="d1ad8aa6" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize uncertainty on a sorted index for readability</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> np.argsort(y_test)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>y_sorted <span class="op">=</span> y_test[idx]</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>y_mean_sorted <span class="op">=</span> y_mean_post[idx]</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>ci_lo_s, ci_hi_s <span class="op">=</span> ci_lo[idx], ci_hi[idx]</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>pi_lo_s, pi_hi_s <span class="op">=</span> pi_lo[idx], pi_hi[idx]</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">4</span>))</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>plt.plot(y_sorted, label<span class="op">=</span><span class="st">"Actual"</span>)</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>plt.plot(y_mean_sorted, label<span class="op">=</span><span class="st">"Posterior mean"</span>)</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>plt.fill_between(<span class="bu">range</span>(<span class="bu">len</span>(y_sorted)), ci_lo_s, ci_hi_s, alpha<span class="op">=</span><span class="fl">0.3</span>, label<span class="op">=</span><span class="st">"95% CrI (mean)"</span>)</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>plt.fill_between(<span class="bu">range</span>(<span class="bu">len</span>(y_sorted)), pi_lo_s, pi_hi_s, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"95% PI (predictive)"</span>)</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Sorted test index"</span>)</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Target"</span>)</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian Regression: Credible vs Prediction Intervals"</span>)</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="05_bayesian_regression_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="bootstrap-approximation-frequentist-but-practical" class="level2">
-<h2 class="anchored" data-anchor-id="bootstrap-approximation-frequentist-but-practical">Bootstrap Approximation (Frequentist but Practical)</h2>
-<p>The <strong>bootstrap</strong> resamples the training data to mimic sampling variability: 1. Draw <span class="math inline">\(B\)</span> bootstrap datasets by sampling <span class="math inline">\(n\)</span> rows <strong>with replacement</strong>. 2. Fit an OLS model on each bootstrap sample. 3. Predict on the test set; take percentiles across predictions for <strong>empirical prediction intervals</strong>.</p>
-<p>This is not Bayesian, but it often gives <strong>similar intuition</strong> about uncertainty without extra libraries.</p>
-<div id="27956ff6" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap predictive intervals</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.utils <span class="im">import</span> resample</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> <span class="dv">200</span>  <span class="co"># number of bootstrap replicates (increase if time allows)</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> []</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(B):</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    Xb, yb <span class="op">=</span> resample(X_train_i, y_train, replace<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">1234</span> <span class="op">+</span> b)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> LinearRegression(fit_intercept<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    m.fit(Xb, yb)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    preds.append(m.predict(X_test_i))</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> np.array(preds)  <span class="co"># shape (B, n_test)</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pct(a, q): <span class="cf">return</span> np.percentile(a, q, axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>boot_lo, boot_hi <span class="op">=</span> pct(preds, <span class="fl">2.5</span>), pct(preds, <span class="fl">97.5</span>)</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="3eafad86" class="cell" data-execution_count="22">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare Bayesian PI vs Bootstrap intervals on a few points</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="bu">min</span>(<span class="dv">30</span>, <span class="bu">len</span>(y_test))  <span class="co"># plot first k sorted points for clarity</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> np.argsort(y_test)[:k]</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>y_c <span class="op">=</span> y_mean_post[idx]</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Bayes PI errors (ensure non-negative magnitudes)</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>bayes_lower <span class="op">=</span> np.clip(y_c <span class="op">-</span> pi_lo[idx], <span class="dv">0</span>, <span class="va">None</span>)</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>bayes_upper <span class="op">=</span> np.clip(pi_hi[idx] <span class="op">-</span> y_c, <span class="dv">0</span>, <span class="va">None</span>)</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>bayes_yerr <span class="op">=</span> np.vstack([bayes_lower, bayes_upper])</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap PI errors (ensure non-negative magnitudes)</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>boot_lower <span class="op">=</span> np.clip(y_c <span class="op">-</span> boot_lo[idx], <span class="dv">0</span>, <span class="va">None</span>)</span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>boot_upper <span class="op">=</span> np.clip(boot_hi[idx] <span class="op">-</span> y_c, <span class="dv">0</span>, <span class="va">None</span>)</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>boot_yerr <span class="op">=</span> np.vstack([boot_lower, boot_upper])</span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">4</span>))</span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(k), y_test[idx], <span class="st">'k'</span>, label<span class="op">=</span><span class="st">"Actual"</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(k), y_c, <span class="st">'b'</span>, label<span class="op">=</span><span class="st">"Posterior mean"</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>plt.errorbar(<span class="bu">range</span>(k), y_c, yerr<span class="op">=</span>bayes_yerr, fmt<span class="op">=</span><span class="st">'none'</span>, capsize<span class="op">=</span><span class="dv">3</span>, ecolor<span class="op">=</span><span class="st">'blue'</span>, label<span class="op">=</span><span class="st">"Bayes 95% PI"</span>)</span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>plt.errorbar(<span class="bu">range</span>(k), y_c, yerr<span class="op">=</span>boot_yerr,  fmt<span class="op">=</span><span class="st">'none'</span>, capsize<span class="op">=</span><span class="dv">3</span>, ecolor<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="st">"Bootstrap 95% PI"</span>)</span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Sorted test index (subset)"</span>)</span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Target"</span>)</span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian vs Bootstrap Prediction Intervals (subset)"</span>)</span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="05_bayesian_regression_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="confidence-vs-credible-intervals-recap" class="level2">
-<h2 class="anchored" data-anchor-id="confidence-vs-credible-intervals-recap">Confidence vs Credible Intervals (Recap)</h2>
-<ul>
-<li><strong>Confidence interval (CI)</strong>: frequency-based coverage under repeated sampling. It does <strong>not</strong> say “the parameter has 95% probability” in the interval.</li>
-<li><strong>Credible interval (CrI)</strong>: posterior probability statement <strong>given data and priors</strong>. With a Gaussian prior and large <span class="math inline">\(n\)</span>, CrIs often resemble CIs.</li>
-</ul>
-<p><strong>Prediction intervals</strong> include observation noise, hence are <strong>wider</strong> than intervals for the mean prediction.</p>
-</section>
-<section id="exercises" class="level2">
-<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<p>This notebook introduces the <strong>basic idea</strong> of Bayesian regression in the simplest possible way.</p>
+<p>We will focus on four ideas:</p>
 <ol type="1">
-<li><strong>Prior sensitivity:</strong> Change <span class="math inline">\(\tau\)</span> (e.g., 0.3, 1.0, 3.0). How do the credible and predictive intervals change? Report test <span class="math inline">\(R^2\)</span>.</li>
-<li><strong>Empirical Bayes for <span class="math inline">\(\tau\)</span>:</strong> Choose <span class="math inline">\(\tau\)</span> by 5‑fold CV, maximizing validation <span class="math inline">\(R^2\)</span> (hint: mimic Ridge search).</li>
-<li><strong>Bootstrap size:</strong> Increase <span class="math inline">\(B\)</span> to 1000. Do coverage and interval width stabilize?</li>
+<li><strong>Prior</strong>: what we believe about the slope before seeing the data<br>
+</li>
+<li><strong>Likelihood</strong>: how well each slope explains the observed data<br>
+</li>
+<li><strong>Posterior</strong>: updated belief after seeing the data<br>
+</li>
+<li><strong>Prediction with uncertainty</strong>: Bayesian methods give a range of plausible values, not just one answer</li>
 </ol>
+<p>We will use a very small example with <strong>one input feature</strong> and a <strong>fixed intercept of 0</strong> so that the main idea is easy to see.</p>
+<section id="create-a-tiny-synthetic-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-tiny-synthetic-dataset">1. Create a tiny synthetic dataset</h2>
+<p>We make data from a simple line with some noise:</p>
+<p>[ y = 3x + ]</p>
+<p>We pretend that we do <strong>not</strong> know the true slope. Our job is to estimate it.</p>
+<div id="6f2cb398" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple one-feature dataset</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">20</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>true_slope <span class="op">=</span> <span class="fl">3.0</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">1.0</span>, size<span class="op">=</span><span class="bu">len</span>(x))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> true_slope <span class="op">*</span> x <span class="op">+</span> noise</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, y)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Simple data for Bayesian regression"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_bayesian_regression_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="define-a-prior-over-the-slope" class="level2">
+<h2 class="anchored" data-anchor-id="define-a-prior-over-the-slope">2. Define a prior over the slope</h2>
+<p>In Bayesian statistics, we start with a <strong>prior</strong>.</p>
+<p>Here, the unknown quantity is the slope (m) in:</p>
+<p>$ y = mx $</p>
+<p>We choose a simple prior:</p>
+<p>$ m (0, 5^2) $</p>
+<p>This means: - before seeing the data, we think slopes near 0 are more likely - but we still allow a wide range of possible slopes</p>
+<div id="e4cfe8a5" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Candidate slope values</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>m_grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">400</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Prior: Normal(mean=0, std=5)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>prior_mean <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>prior_std <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>prior <span class="op">=</span> np.exp(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> ((m_grid <span class="op">-</span> prior_mean) <span class="op">/</span> prior_std) <span class="op">**</span> <span class="dv">2</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.plot(m_grid, prior)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"slope m"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"prior density (unnormalized)"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Prior distribution for the slope"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_bayesian_regression_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="compute-a-simple-likelihood" class="level2">
+<h2 class="anchored" data-anchor-id="compute-a-simple-likelihood">3. Compute a simple likelihood</h2>
+<p>The <strong>likelihood</strong> asks:</p>
+<blockquote class="blockquote">
+<p>If the slope were (m), how well would it explain the observed data?</p>
+</blockquote>
+<p>We assume the noise standard deviation is known and equals 1.</p>
+<p>For teaching purposes, we compute the likelihood on a grid of slope values.</p>
+<div id="0201d84d" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute likelihood on the grid</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>log_likelihood <span class="op">=</span> []</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m <span class="kw">in</span> m_grid:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> m <span class="op">*</span> x</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    log_like <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> np.<span class="bu">sum</span>(((y <span class="op">-</span> y_pred) <span class="op">/</span> sigma) <span class="op">**</span> <span class="dv">2</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    log_likelihood.append(log_like)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>log_likelihood <span class="op">=</span> np.array(log_likelihood)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Stabilize numerically before exponentiating</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>likelihood <span class="op">=</span> np.exp(log_likelihood <span class="op">-</span> np.<span class="bu">max</span>(log_likelihood))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>plt.plot(m_grid, likelihood)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"slope m"</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"likelihood (scaled)"</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Likelihood of the slope"</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_bayesian_regression_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="combine-prior-and-likelihood-to-get-the-posterior" class="level2">
+<h2 class="anchored" data-anchor-id="combine-prior-and-likelihood-to-get-the-posterior">4. Combine prior and likelihood to get the posterior</h2>
+<p>Bayesian updating is:</p>
+<p>$ $</p>
+<p>The posterior tells us which slope values are most plausible <strong>after seeing the data</strong>.</p>
+<div id="48120d51" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>posterior_unnormalized <span class="op">=</span> prior <span class="op">*</span> likelihood</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>posterior <span class="op">=</span> posterior_unnormalized <span class="op">/</span> np.<span class="bu">sum</span>(posterior_unnormalized)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>plt.plot(m_grid, posterior)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"slope m"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"posterior probability"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Posterior distribution for the slope"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_bayesian_regression_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="find-the-most-plausible-slope-and-compare-with-the-true-one" class="level2">
+<h2 class="anchored" data-anchor-id="find-the-most-plausible-slope-and-compare-with-the-true-one">5. Find the most plausible slope and compare with the true one</h2>
+<p>A simple summary of the posterior is the slope value with the highest posterior probability.</p>
+<p>This is called the <strong>MAP estimate</strong>: - MAP = maximum a posteriori - it is the peak of the posterior</p>
+<div id="51e9c786" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m_map <span class="op">=</span> m_grid[np.argmax(posterior)]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"True slope:"</span>, true_slope)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MAP slope:"</span>, <span class="bu">round</span>(<span class="bu">float</span>(m_map), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True slope: 3.0
+MAP slope: 2.842</code></pre>
+</div>
+</div>
+</section>
+<section id="plot-the-fitted-line" class="level2">
+<h2 class="anchored" data-anchor-id="plot-the-fitted-line">6. Plot the fitted line</h2>
+<p>We now draw the data together with the line from the MAP estimate.</p>
+<div id="aa83c145" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, y, label<span class="op">=</span><span class="st">"data"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x, true_slope <span class="op">*</span> x, label<span class="op">=</span><span class="st">"true line"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>plt.plot(x, m_map <span class="op">*</span> x, label<span class="op">=</span><span class="st">"MAP line"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian regression fit"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_bayesian_regression_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="bayesian-regression-with-scikit-learn" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-regression-with-scikit-learn">Bayesian Regression with scikit-learn</h2>
+<p>So far, we built a simple Bayesian model manually using a grid of possible slope values.</p>
+<p>In practice, we usually use libraries that: - estimate the posterior automatically - handle multiple parameters - provide uncertainty estimates</p>
+<p>Here we use <code>BayesianRidge</code> from scikit-learn.</p>
+<p>Key ideas: - The model assumes a prior over the coefficients - It updates this using the data (likelihood) - The result is a posterior distribution over parameters</p>
+<p>Unlike standard linear regression, this model: - returns a mean prediction - also provides uncertainty (standard deviation)</p>
+<div id="6acbdce0" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> BayesianRidge</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Recreate the simple dataset</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>X_simple <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>y_simple <span class="op">=</span> y</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Reshape X for sklearn</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>X_sklearn <span class="op">=</span> X_simple.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit model</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> BayesianRidge()</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>model.fit(X_sklearn, y_simple)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Prediction grid</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>y_pred, y_std <span class="op">=</span> model.predict(X_test, return_std<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_simple, y_simple, label<span class="op">=</span><span class="st">"Data"</span>)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>plt.plot(X_test, y_pred, label<span class="op">=</span><span class="st">"Mean prediction"</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>plt.fill_between(</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    X_test.ravel(),</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> y_std,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> y_std,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Uncertainty (±2 std)"</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Bayesian Ridge Regression"</span>)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Estimated slope:"</span>, model.coef_[<span class="dv">0</span>])</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Estimated intercept:"</span>, model.intercept_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_bayesian_regression_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated slope: 1.3084469541761872
+Estimated intercept: 0.7864666676772343</code></pre>
+</div>
+</div>
+</section>
+<section id="main-takeaway" class="level2">
+<h2 class="anchored" data-anchor-id="main-takeaway">8. Main takeaway</h2>
+<p>The basic Bayesian workflow is:</p>
+<ol type="1">
+<li>choose a <strong>prior</strong></li>
+<li>compute the <strong>likelihood</strong></li>
+<li>multiply them to get the <strong>posterior</strong></li>
+<li>use the posterior for <strong>estimation and uncertainty</strong></li>
+</ol>
+<p>In this notebook we used a very simple one-parameter example so the main ideas stay visible.</p>
+<p>In more realistic Bayesian regression: - the intercept is also unknown - there can be many features - we usually use more advanced tools rather than a grid over one parameter</p>
 
 
 </section>

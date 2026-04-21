@@ -280,7 +280,7 @@ We will cover splitting criteria, key hyperparameters, pruning via validation, a
 \Delta = \text{SSE}(\mathcal{S}) - \big[\text{SSE}(\mathcal{S}_L) + \text{SSE}(\mathcal{S}_R)\big].
 \]</span></p>
 <p><strong>Predictions</strong> in a leaf are the mean of training targets in that leaf.<br>
-Key hyperparameters control complexity: - <code>max_depth</code>: maximum tree depth (smaller <span class="math inline">\(\\Rightarrow\)</span> simpler model). - <code>min_samples_leaf</code>: minimum samples per leaf (larger <span class="math inline">\(\\Rightarrow\)</span> smoother predictions). - <code>min_samples_split</code>: minimum samples to split an internal node. - <code>ccp_alpha</code>: <strong>cost‑complexity pruning</strong> strength.</p>
+Key hyperparameters control complexity: - <code>max_depth</code>: maximum tree depth (smaller <span class="math inline">\(\\Rightarrow\)</span> simpler model). - <code>min_samples_leaf</code>: minimum samples per leaf (larger <span class="math inline">\(\\Rightarrow\)</span> smoother predictions). - <code>min_samples_split</code>: minimum samples to split an internal node.</p>
 <div id="3ee6f3ec" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Diabetes dataset</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_diabetes</span>
@@ -636,7 +636,7 @@ dtype: float64</code></pre>
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <ul>
 <li>Trees split to reduce squared error and can model <strong>non‑linear</strong> relationships.</li>
-<li>They are prone to <strong>overfitting</strong>; tune <code>max_depth</code>, <code>min_samples_leaf</code>, and <code>ccp_alpha</code>.</li>
+<li>They are prone to <strong>overfitting</strong>; tune <code>max_depth</code> and <code>min_samples_leaf</code></li>
 <li>Use diagnostics, learning curves, feature importance, and partial dependence for interpretation.</li>
 </ul>
 </section>
